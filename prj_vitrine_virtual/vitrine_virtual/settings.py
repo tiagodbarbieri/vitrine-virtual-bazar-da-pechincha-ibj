@@ -134,4 +134,28 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # Especificando o caminho para arquivos estáticos fornecidos pelos usuários
 MEDIA_ROOT = os.path.join(BASE_DIR, "upload")
-MEDIA_URL = "/upload"
+MEDIA_URL = "upload/"
+
+# Configuração de logging de mensagens de erro
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "simple": {"format": "Mensagem: %(levelname)s %(message)s"},
+    },
+    "handlers": {
+        "console": {"level": "DEBUG", "class": "logging.StreamHandler", "formatter": "simple"},
+    },
+    "loggers": {
+        "vitrine_virtual": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+            "propagate": True,
+        },
+        "main": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+            "propagate": True,
+        },
+    },
+}
