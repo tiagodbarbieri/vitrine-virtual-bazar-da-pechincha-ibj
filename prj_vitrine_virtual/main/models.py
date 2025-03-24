@@ -27,28 +27,17 @@ class Item(models.Model):
     stock = models.PositiveIntegerField()
     creation_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
-    category_id = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, related_name="items")
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, related_name="items")
 
     def __str__(self):
-        return f"{self.id} - {self.name}\n{self.description}\nR${self.price},{self.creation_date},{self.category_id}"
+        return f"{self.id} - {self.name}\n{self.description}\nR${self.price},{self.creation_date},{self.category.name}"
 
 
 # Tabela de imagens
 class Image(models.Model):
     id = models.BigAutoField(primary_key=True)
-    file = models.ImageField(upload_to="itens_images/", blank=True)
-    name = models.CharField(max_length=100, unique=True)
-    path = models.FilePathField(max_length=256, unique=True)
-    size = models.IntegerField()
-    item_id = models.ForeignKey(Item, on_delete=models.CASCADE, related_name="images")
-
-    def save(self, *args, **kwargs):
-        if self.file:
-            self.name = self.file.name
-            self.path = self.file.path
-            self.size = self.file.size
-
-        super(Image, self).save(*args, **kwargs)
+    file = models.ImageField(upload_to="upload/", blank=True)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name="images")
 
     def __str__(self):
-        return f"{self.name} ({self.size}) bytes"
+        return f"{self.file.name} ({self.file.size}) bytes"
