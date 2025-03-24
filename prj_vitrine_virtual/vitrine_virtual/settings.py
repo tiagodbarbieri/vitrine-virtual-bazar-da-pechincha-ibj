@@ -134,7 +134,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # Especificando o caminho para arquivos estáticos fornecidos pelos usuários
 MEDIA_ROOT = os.path.join(BASE_DIR, "upload")
-MEDIA_URL = "upload/"
+MEDIA_URL = "/upload/"
 
 # Configuração de logging de mensagens de erro
 LOGGING = {

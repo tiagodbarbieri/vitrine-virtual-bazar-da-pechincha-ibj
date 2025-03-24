@@ -36,7 +36,7 @@ class Item(models.Model):
 # Tabela de imagens
 class Image(models.Model):
     id = models.BigAutoField(primary_key=True)
-    file = models.ImageField(upload_to="upload/", blank=True)
+    file = models.ImageField(upload_to="items/", blank=True)
     item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name="images")
 
     def __str__(self):
