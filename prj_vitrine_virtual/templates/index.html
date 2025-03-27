@@ -1,23 +1,5 @@
-{% load static %}
-<!doctype html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel=""stylesheet"href="{% static 'css/bootstrap.min.css' %}">
-
-    <title>Testando o Bootstrap para criar um template</title>
-  </head>
-  <body>
-    <h1>Teste do Bootstrap</h1>
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="{% static 'js/jquery.min.js' %}"></script> 
-  <script src="{% static 'js/popper.min.js' %}"></script> 
-  <script src="{% static 'js/bootstrap.min.js' %}"></script> 
-  </body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+    <h2>Início</h2>
+    <p>Você está na página principal</p>
+{% endblock content %}
