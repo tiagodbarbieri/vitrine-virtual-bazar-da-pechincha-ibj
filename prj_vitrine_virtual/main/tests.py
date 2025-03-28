@@ -22,7 +22,7 @@ class DB_manipulation:
     def exibir_nomes_colunas(self, nome_tabela: str):
         connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
-        cursor.execute(f"PRAGMA table_info(main_{nome_tabela.lower()});")
+        cursor.execute(f"PRAGMA table_info({nome_tabela.lower()});")
         colunas = cursor.fetchall()
         print(f"Lista de colunas presentes na tabela {nome_tabela.capitalize()}")
         for coluna in colunas:
@@ -32,7 +32,7 @@ class DB_manipulation:
     def exibir_dados_tabela(self, nome_tabela: str):
         connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
-        cursor.execute(f"SELECT * FROM main_{nome_tabela.lower()};")
+        cursor.execute(f"SELECT * FROM {nome_tabela.lower()};")
         dados = cursor.fetchall()
         print(f"\nDados da tabela {nome_tabela.capitalize()}:")
         for linha in dados:
@@ -42,7 +42,7 @@ class DB_manipulation:
     def apagar_linha_tabela(self, nome_tabela: str, id: int):
         connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
-        cursor.execute(f"DELETE FROM main_{nome_tabela.lower()} WHERE id = ?", (id,))
+        cursor.execute(f"DELETE FROM {nome_tabela.lower()} WHERE id = ?", (id,))
         connection.commit()
         connection.close()
 
@@ -58,13 +58,16 @@ class DB_manipulation:
 
 if __name__ == "__main__":
     manipulador = DB_manipulation()
-    manipulador.exibir_tabelas_db()
+    # manipulador.exibir_tabelas_db()
 
-    manipulador.exibir_nomes_colunas("Category")
-    manipulador.exibir_dados_tabela("Category")
+    # manipulador.exibir_nomes_colunas("main_category")
+    # manipulador.exibir_dados_tabela("main_category")
 
-    manipulador.exibir_nomes_colunas("Item")
-    manipulador.exibir_dados_tabela("Item")
+    # manipulador.exibir_nomes_colunas("main_item")
+    # manipulador.exibir_dados_tabela("main_item")
 
-    manipulador.exibir_nomes_colunas("Image")
-    manipulador.exibir_dados_tabela("Image")
+    # manipulador.exibir_nomes_colunas("main_image")
+    manipulador.exibir_dados_tabela("main_image")
+
+    # manipulador.exibir_nomes_colunas("auth_user")
+    # manipulador.exibir_dados_tabela("auth_user")
