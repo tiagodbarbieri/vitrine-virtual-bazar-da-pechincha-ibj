@@ -8,6 +8,7 @@
 
     <!-- Bootstrap CSS -->
 
+      <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
       <!-- Este trecho de código está conforme o livro Python e Django - Desenvolvimento Moderno e Ágil
       <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
       <link rel="stylesheet" href="{% static 'css/app.css' %}">
@@ -20,11 +21,14 @@
     <title>BAZAR DA PECHINCHA IBJ</title>
   </head>
   <body>
-    {% include 'snippets/barra_navegacao.html' %}
-    {% block content %}
-    {% endblock content %}
-    {% include 'snippets/rodape.html' %}
-
+    <div class="wrapper">
+      {% include 'snippets/barra_navegacao.html' %}
+      <div class="content">
+        {% block content %}
+        {% endblock content %}
+      </div>
+      {% include 'snippets/rodape.html' %}
+    </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     
