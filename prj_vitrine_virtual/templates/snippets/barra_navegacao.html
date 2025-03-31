@@ -1,19 +1,22 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-primary">
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-light bg-primary py-3">
     <a class="navbar-brand text-light" href="/">
-        Vitrine Virtual
+        <img src="{% static 'img/logo_ibj.jpg' %}" height="30" alt="Logo">
+        BAZAR DA PECHINCHA IBJ
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
+        <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link text-light" href="/">
-                    Página Principal
-                </a>
+                <a class="nav-link text-light" href="/quem-somos/">QUEM SOMOS</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link text-light" href="/sobre/">Sobre Nós</a>
+            <li class="nav-item pr-2">
+                <a class="nav-link text-light" href="/contato/">CONTATO</a>
+            </li>
+            <li class="nav-item border-left pl-2">
+                <a class="nav-link text-light" href="/admin/">LOGIN</a>
             </li>
         </ul>
     </div>
