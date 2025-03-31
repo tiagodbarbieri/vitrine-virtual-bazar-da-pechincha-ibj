@@ -24,3 +24,4 @@ urlpatterns = [
     path("quem-somos/", TemplateView.as_view(template_name="quem_somos.html"), name="quem-somos"),
     path("contato/", TemplateView.as_view(template_name="contato.html"), name="contato"),
     path("admin/", admin.site.urls),
+    ]
