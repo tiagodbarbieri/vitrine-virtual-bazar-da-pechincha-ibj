@@ -1,5 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
-    <h2>Início</h2>
-    <p>Você está na página principal</p>
+<body>
+    <h1>Produtos Disponíveis</h1>
+    <ul>
+        {% for item in itens %}
+        <li>
+            <strong>Nome:</strong> {{ item.name }} <br>
+            <strong>Preço:</strong> R$ {{ item.price }} <br>
+            <strong>Categoria:</strong> {{ item.category.name }}
+        </li>
+    {% empty %}
+        <p>Nenhum item encontrado.</p>
+    {% endfor %}
+    </ul>
+</body>
+
 {% endblock content %}
