@@ -1,4 +1,9 @@
 from django.contrib import admin
+from .models import Category, Item, Image
+
+# Dados para login:
+#   user: admin_ibj
+#   password: ibj_2025
 
 # Register your models here.
 # importa os modelos de models.py
