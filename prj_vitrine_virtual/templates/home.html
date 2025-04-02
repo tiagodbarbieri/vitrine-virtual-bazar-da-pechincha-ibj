@@ -4,7 +4,33 @@
 <form method="POST">
     <!-- Crie seu template aqui -->
     {% csrf_token %}
-    {{form}}
-    <button type="submit" class="btn btn-primary">Pesquisar</button>
+<div class="p-3">
+    <div class="container">
+        <div class="row mt-3">
+            <div class="form-group p-2">
+                <label for="category">Categoria:</label>
+                <select class="form-control">
+                    <option value="">todas</option>
+                </select>
+                <!-- <div class="row">{{form.category}}</div> -->
+            </div>
+            <div class="form-group p-2">
+                <label for="word">Palavra chave:</label>
+                <input type="text" class="form-control" id="word" placeholder="Digite...">
+                <!-- <div class="row">{{form.word}}</div> -->
+            </div>
+            <div class="form-group p-2">
+                <label for="order">Ordenar por:</label>
+                <select class="form-control">
+                    <option value="">nome</option>
+                </select>
+                <!-- <div class="row">{{form.order}}</div> -->
+            </div>
+            <div class="col">
+                <button type="submit" class="btn btn-primary">Pesquisar</button>
+            </div>
+        </div>
+    </div>
+</div>
 </form>
 {% endblock content %}
