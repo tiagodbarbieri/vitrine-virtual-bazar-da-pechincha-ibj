@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+<form method="POST">
+    <!-- Crie seu template aqui -->
+    {% csrf_token %}
+    {{form}}
+    <button type="submit" class="btn btn-primary">Pesquisar</button>
+</form>
+{% endblock content %}
