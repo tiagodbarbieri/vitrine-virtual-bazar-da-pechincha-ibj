@@ -6,7 +6,7 @@
     {% csrf_token %}
 <div class="p-3">
     <div class="container">
-        <div class="row mt-3">
+        <div class="row justify-content-md-center mt-2">
             <div class="form-group p-2">
                 <label for="category">Categoria:</label>
                 <select class="form-control">
@@ -26,10 +26,11 @@
                 </select>
                 <!-- <div class="row">{{form.order}}</div> -->
             </div>
-            <div class="col">
+            <div class="form-group align-self-end p-2">
                 <button type="submit" class="btn btn-primary">Pesquisar</button>
             </div>
         </div>
+        <hr>
     </div>
 </div>
 </form>
