@@ -1,16 +1,20 @@
-from django.shortcuts import render
-from .models import Item, Category
+from django.shortcuts import render, get_object_or_404
 
-def index(request):
-    category_id = request.GET.get('category')  # Obtém o ID da categoria selecionada
-    categories = Category.objects.all()  # Obtém todas as categorias
+# Create your views here.
 
-    if category_id:
-        itens = Item.objects.filter(category_id=category_id)  # Filtra os itens pela categoria
-    else:
-        itens = Item.objects.all()  # Exibe todos os itens se nenhuma categoria for selecionada
+from .models import Category, Item
 
-    return render(request, 'index.html', {
-        'itens': itens,
-        'categories': categories,
-    })
+
+def listar_itens (request, slug_categoria=None):
+    categoria = None
+    lista_categorias = Category.objects.all()
+    lista_itens = Item.objects.filter(disponivel=True)
+    if slug_categoria:
+        categoria = get_object_or_404(Category, slug=slug_categoria)
+        lista_itens = Item.objects.filter(categoria=categoria) 
+    contexto = {'categoria': categoria,'lista_categorias': lista_categorias,'lista_itens': lista_itens}
+    return render(request, "item/listar.html",contexto)
+def detalhes_item(request, id, slug):
+    item = get_object_or_404(Item, id=id, slug=slug_item, disponivel=True)
+    contexto = {'item': item}
+    return render(request, "item/detalhes.html", contexto) 
