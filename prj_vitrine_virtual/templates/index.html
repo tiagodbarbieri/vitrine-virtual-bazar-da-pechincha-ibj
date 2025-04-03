@@ -1,19 +1,13 @@
 {% extends "base.html" %}
 {% block conteudo %}
-    <h1>Produtos</h1>
-
-    <div class="row">
-        {% for item in lista_itens %}
-        <div class="col-md-4">
-            <div class="thumbnail">
-                <div class="caption">
-                    <h3>{{ item.name }}</h3>
-                    <p>Preço: R$ {{ item.price }}</p>
-                </div>
-            </div>
-        </div>
-        {% empty %}
-        <p>Nenhum produto encontrado.</p>
+<title>Lista de Produtos</title>
+</head>
+<body>
+    <h1>Produtos Disponíveis</h1>
+    <ul>
+        {% for produto in produtos %}
+            <li>{{ produto.nome }} - R$ {{ produto.preco }}</li>
         {% endfor %}
-    </div>
+    </ul>
+</body>
 {% endblock %}
