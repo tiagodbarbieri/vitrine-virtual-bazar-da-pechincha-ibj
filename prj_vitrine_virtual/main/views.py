@@ -15,6 +15,6 @@ def listar_itens (request, slug_categoria=None):
     contexto = {'categoria': categoria,'lista_categorias': lista_categorias,'lista_itens': lista_itens}
     return render(request, "item/listar.html",contexto)
 def detalhes_item(request, id, slug):
-    item = get_object_or_404(Item, id=id, slug=slug_item, disponivel=True)
+    item = get_object_or_404(Item, id=id, slug=slug, disponivel=True)
     contexto = {'item': item}
     return render(request, "item/detalhes.html", contexto) 
