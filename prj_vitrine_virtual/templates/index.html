@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% block conteudo %}
-<div class="container-fluid">
     <h1>Produtos</h1>
 
     <div class="row">
@@ -8,15 +7,13 @@
         <div class="col-md-4">
             <div class="thumbnail">
                 <div class="caption">
-                    <h3 class="text-center">{{ item.name }}</h3>
-                    <p class="text-center">R$ {{ item.price }}</p>
-                    <p class="text-center">{{ item.category}}</p>
+                    <h3>{{ item.name }}</h3>
+                    <p>Preço: R$ {{ item.price }}</p>
                 </div>
             </div>
         </div>
         {% empty %}
-        <p>Nenhum item encontrado.</p>
+        <p>Nenhum produto encontrado.</p>
         {% endfor %}
     </div>
-</div>
 {% endblock %}
