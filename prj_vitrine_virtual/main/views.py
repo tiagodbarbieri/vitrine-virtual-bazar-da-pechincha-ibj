@@ -4,7 +4,7 @@ from .models import Category, Item
 def index(request, slug_categoria=None):
     categoria = None
     lista_categorias = Category.objects.all()  # Todas as categorias
-    lista_itens = Item.objects.filter(disponivel=True)  # Itens disponíveis
+    lista_itens = Item.objects.filter(status=True)  # Itens disponíveis
 
     # Filtro por categoria
     if slug_categoria:
