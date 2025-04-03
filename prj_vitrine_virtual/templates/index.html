@@ -5,8 +5,10 @@
 <body>
     <h1>Produtos Disponíveis</h1>
     <ul>
-        {% for produto in produtos %}
-            <li>{{ produto.nome }} - R$ {{ produto.preco }}</li>
+        {% for item in lista_itens %}
+            <li>Produto: {{ item.name }}<li>
+            <li>Preço: R$ {{ item.price }}</li>
+            <li>Categoria: {{item.category}}</li>
         {% endfor %}
     </ul>
 </body>
