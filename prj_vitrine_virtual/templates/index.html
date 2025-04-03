@@ -16,18 +16,6 @@ Produtos
 {% for item in lista_itens %}
 <div class=”col-md-4”>
 <div class=”thumbnail”>
-<a href=”{{ item.get_absolute_url }}”>
-<img src=”
-{% if item.image %}
-{{ produto.image.url }}
-{% else %}
-{% static
-‘img/default.jpg’ %}
-{% endif %}”
-alt=”Imagem de {{ produto.nome }}”
-style=”height: 130px;
-width: auto”>
-</a>
 <div class=”caption”>
 <h3 class=”text-center”>
 <a href=
