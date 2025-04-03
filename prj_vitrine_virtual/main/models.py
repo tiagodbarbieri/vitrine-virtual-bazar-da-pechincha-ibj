@@ -15,6 +15,11 @@ class Category(models.Model):
     creation_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        verbose_name = "Category"
+        verbose_name_plural = "Categories"
+        ordering = ["name"]
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name)
@@ -37,6 +42,9 @@ class Item(models.Model):
     creation_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, related_name="items")
+
+    class Meta:
+        ordering = ["name"]
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -62,6 +70,9 @@ class Image(models.Model):
     file = models.ImageField(upload_to="items/", blank=True)
     status = models.BooleanField(default=True)
     item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name="images")
+
+    class Meta:
+        ordering = ["id"]
 
     def __str__(self):
         return f"{self.file.name} ({self.file.size}) bytes"

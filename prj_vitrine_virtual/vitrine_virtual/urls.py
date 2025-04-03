@@ -26,3 +26,7 @@ urlpatterns = [
     path("contato/", TemplateView.as_view(template_name="contato.html"), name="contato"),
     path("admin/", admin.site.urls),
 ]
+#altera os nomes dos sites admin
+admin.site.site_title = "Vitrine virtual - admin"
+admin.site.site_header = "Administração Vitrine Virtual - Bazar da pechincha"
+admin.site.index_title = "Admininstração do Site"
