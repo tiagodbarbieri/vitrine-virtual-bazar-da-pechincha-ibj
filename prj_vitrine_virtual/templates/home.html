@@ -1,40 +1,4 @@
 {% extends "base.html" %}
 {% block content %}
-{% load static %}
-<form method="POST">
-    {% csrf_token %}
-    <div class="p-3">
-        <div class="container">
-            <div class="row justify-content-md-center mt-2">
-                <!-- Form para categorias -->
-                <div class="form-group p-2">
-                    <label for="category">Categoria:</label>
-                    <select class="form-control">
-                        {% for category in form.category %}
-                        <option value="{{ category }}"></option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <!-- Form para palavra chave-->
-                <div class="form-group p-2">
-                    <label for="word">Palavra chave:</label>
-                    <input type="text" class="form-control" id="word" placeholder="Digite...">
-                </div>
-                <!-- Form para tipo de ordenação -->
-                <div class="form-group p-2">
-                    <label for="order">Ordenar por:</label>
-                    <select class="form-control">
-                        {% for order in form.order %}
-                        <option value="{{ order }}"></option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="form-group align-self-end p-2">
-                    <button type="submit" class="btn btn-primary">Pesquisar</button>
-                </div>
-            </div>
-            <hr>
-        </div>
-    </div>
-</form>
+{% include 'snippets/barra_pesquisa.html' %}
 {% endblock content %}
