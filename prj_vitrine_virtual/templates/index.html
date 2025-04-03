@@ -2,6 +2,21 @@
 {% block content %}
 <body>
     <h1>Produtos Disponíveis</h1>
+
+    <!-- Formulário para filtrar por categoria -->
+    <form method="get">
+        <label for="category">Filtrar por Categoria:</label>
+        <select name="category" id="category">
+            <option value="">Todas</option>
+            {% for category in categories %}
+            <option value="{{ category.id }}" {% if category.id|stringformat:"s" == request.GET.category %}selected{% endif %}>
+                {{ category.name }}
+            </option>
+            {% endfor %}
+        </select>
+        <button type="submit">Filtrar</button>
+    </form>
+
     <ul>
         {% for item in itens %}
         <li>
@@ -9,9 +24,9 @@
             <strong>Preço:</strong> R$ {{ item.price }} <br>
             <strong>Categoria:</strong> {{ item.category.name }}
         </li>
-    {% empty %}
+        {% empty %}
         <p>Nenhum item encontrado.</p>
-    {% endfor %}
+        {% endfor %}
     </ul>
 </body>
 
