@@ -4,9 +4,9 @@
     <ul>
         {% for item in lista_itens %}
             <li>
-                Nome: {{ item.nome }} <br>
-                Preço: R$ {{ item.preco }} <br>
-                Categoria: {{ item.categoria }}
+                Nome: {{ item.name }} <br>
+                Preço: R$ {{ item.price }} <br>
+                Categoria: {{ item.category }}
             </li>
         {% empty %}
             <li>Nenhum item disponível.</li>
