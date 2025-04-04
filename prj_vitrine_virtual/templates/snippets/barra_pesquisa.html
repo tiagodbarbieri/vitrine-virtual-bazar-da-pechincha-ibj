@@ -1,31 +1,38 @@
-<form method="POST">
+<form action="" method="post">
     {% csrf_token %}
     <div class="p-3">
         <div class="container">
             <div class="row justify-content-md-center mt-2">
-                <!-- Form para categorias -->
+                <!-- Form para categorias  -->
                 <div class="form-group p-2">
-                    <label for="category">{{form.category.label}}</label>
-                    <select class="form-control">
+                    <label for="id_category">{{form.category.label}}</label>
+                    <select class="form-control" name="category" id="id_category">
                         {% for category in form.category %}
-                        <option value="{{ category }}"></option>
+                            {{ category }}
                         {% endfor %}
                     </select>
                 </div>
-                <!-- Form para palavra chave-->
+                
+                <!-- Form para palavra chave -->
                 <div class="form-group p-2">
-                    <label for="word">{{form.word.label}}</label>
-                    <input type="text" class="form-control" id="word" placeholder="{{ form.word.initial}}">
+                    <label for="id_word">{{form.word.label}}</label>
+                    {% if form.word.value == Empty or form.word.value == "" %}
+                        <input type="text" name="word" class="form-control" id="id_word" placeholder="Digite...">
+                    {% else %}
+                        <input type="text" name="word" class="form-control" id="id_word" value="{{form.word.value}}">
+                    {% endif %}
                 </div>
+                
                 <!-- Form para tipo de ordenação -->
                 <div class="form-group p-2">
-                    <label for="order">{{form.order.label}}</label>
-                    <select class="form-control">
+                    <label for="id_order">{{form.order.label}}</label>
+                    <select class="form-control" name="order" id="id_order">
                         {% for order in form.order %}
-                        <option value="{{ order }}"></option>
+                            {{ order }}
                         {% endfor %}
                     </select>
                 </div>
+                
                 <div class="form-group align-self-end p-2">
                     <button type="submit" class="btn btn-primary">Pesquisar</button>
                 </div>
