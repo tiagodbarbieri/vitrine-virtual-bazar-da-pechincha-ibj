@@ -7,6 +7,11 @@
                 Nome: {{ item.name }} <br>
                 Preço: R$ {{ item.price }} <br>
                 Categoria: {{ item.category }}
+                {% if item.image_set.exists %}
+                <img src="{{ item.image_set.first.image.url }}" alt="{{ item.name }}" style="max-width:150px;">
+            {% else %}
+                <p>Imagem não disponível</p>
+            {% endif %}
             </li>
         {% empty %}
             <li>Nenhum item disponível.</li>
