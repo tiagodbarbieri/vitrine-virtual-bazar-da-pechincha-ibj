@@ -9,15 +9,17 @@
         
           <div id="itemCarousel" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
-               <div class="carousel-item active">
-                  <img src="{% static 'img/camiseta_vermelha.jpeg' %}" class="d-block w-100" alt="Imagem 1">
-               </div>
-               <div class="carousel-item">
-                  <img src="{% static 'img/sandalia.jpeg' %}" class="d-block w-100" alt="Imagem 2">
-               </div>
-               <div class="carousel-item">
-                  <img src="{% static 'img/sapato_masculino.jpeg' %}" class="d-block w-100" alt="Imagem 3">
-               </div>
+                {% for image in images %}
+                  {% if forloop.counter == 1 %}
+                    <div class="carousel-item active">
+                      <img src="/upload/{{image.file.name}}" class="d-block w-100" alt="imagem_{{image.id}}">
+                    </div>
+                  {% else %}
+                    <div class="carousel-item">
+                      <img src="/upload/{{image.file.name}}" class="d-block w-100" alt="imagem_{{image.id}}">
+                    </div>
+                  {% endif %}
+                {% endfor %}
             </div>
             <!-- Botões de navegação -->
             <a class="carousel-control-prev" href="#itemCarousel" role="button" data-slide="prev">
@@ -35,9 +37,9 @@
       <div class="col-lg-4 col-md-6 col-12">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Nome do Produto</h5>
-            <p class="card-text">Descrição detalhada do item. Aqui você pode adicionar dsaffasfasfasdfasdfasdfasdfasdfasdfasdfdgadfgsdfg informações relevantes sobre o produto, suas características, especificações e outros detalhes que ajudem o usuário a entender o que está sendo oferecido.</p>
-            <p class="h4">Preço: R$00,00</p>
+            <h5 class="card-title">{{item.name}}</h5>
+            <p class="card-text">{{item.description}}</p>
+            <p class="h4">Preço: R${{item.price}}</p>
             <button class="btn btn-primary" onclick="window.location.href='{% url 'contato' %}';">
               Entrar em contato
             </button>
