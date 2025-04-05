@@ -1,20 +1,35 @@
 {% extends "base.html" %}
 {% block content %}
-    <h2>Produtos</h2>
-    <ul>
+    <h2 style="text-align: center; color: #003366;">PRODUTOS</h2>
+    <style>
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, auto);
+            justify-content: center;
+            gap: 20px;
+        }
+        .grid-item {
+            text-align: center;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+    </style>
+    <div class="grid-container">
         {% for item in lista_itens %}
-            <li>
-                Nome: {{ item.name }} <br>
-                Preço: R$ {{ item.price }} <br>
-                Categoria: {{ item.category }}
+            <div class="grid-item">
                 {% if item.image_set.exists %}
-                <img src="{{ item.image_set.first.image.url }}" alt="{{ item.name }}" style="max-width:150px;">
-            {% else %}
-                <p>Imagem não disponível</p>
-            {% endif %}
-            </li>
+                    <img src="{{ item.image_set.first.image.url }}" alt="{{ item.name }}" style="max-width:150px;">
+                {% else %}
+                    <p>Imagem não disponível</p>
+                {% endif %}
+                <p>
+                    Nome: {{ item.description }} <br>
+                    Preço: R$ {{ item.price }} <br>
+                    Categoria: {{ item.category }}
+                </p>
+            </div>
         {% empty %}
-            <li>Nenhum item disponível.</li>
+            <p>Nenhum item disponível.</p>
         {% endfor %}
-    </ul>
+    </div>
 {% endblock content %}
