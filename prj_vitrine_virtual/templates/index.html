@@ -1,7 +1,40 @@
 {% extends "base.html" %}
 {% block content %}
     <h2 style="text-align: center; color: #003366;">PRODUTOS</h2>
+    <div style="text-align: center; margin-bottom: 20px;">
+        <form action="" method="GET" class="search-form">
+            <input type="text" name="busca" placeholder="Buscar por nome" class="search-input" />
+            <button type="submit" class="search-button">Buscar</button>
+        </form>
+    </div>
     <style>
+        /* Estilos para o formulário de busca */
+        .search-form {
+            display: inline-block;
+        }
+        .search-input {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 16px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 250px;
+        }
+        .search-button {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 16px;
+            padding: 8px 16px;
+            margin-left: 5px;
+            border: none;
+            background-color: #003366;  /* mesma cor da barra de navegação */
+            color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .search-button:hover {
+            background-color: #002244;
+        }
+        /* Estilos para a grid de produtos */
         .grid-container {
             display: grid;
             grid-template-columns: repeat(3, auto);
