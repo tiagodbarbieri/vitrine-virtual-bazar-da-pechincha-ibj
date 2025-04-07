@@ -10,7 +10,7 @@ def categories():
 
 
 class Search(forms.Form):
-    order_list = [("1", "nome"), ("2", "mais recentes"), ("3", "menor valor"), ("4", "maior valor")]
+    order_list = [("1", "mais recentes"), ("2", "menor valor"), ("3", "maior valor"), ("4", "nome")]
     category = forms.ChoiceField(choices=categories(), label="Categoria:")
     word = forms.CharField(required=False, label="Palavra chave:")
     order = forms.ChoiceField(choices=order_list, label="Ordenar por:")
