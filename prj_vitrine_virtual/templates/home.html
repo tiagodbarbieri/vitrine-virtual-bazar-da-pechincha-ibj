@@ -1,4 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
 {% include 'snippets/barra_pesquisa.html' %}
+
+{% if items|length > 0 %}
+{% for item in items %}
+    <p>Nome: {{ item.name }}. Preço: R${{ item.price}}</p>
+{% endfor %}
+{% else %}
+    <p>Nenhum item encontrado!</p>
+{% endif %}
 {% endblock content %}
