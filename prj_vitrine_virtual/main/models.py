@@ -38,6 +38,9 @@ class Item(models.Model):
     update_date = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, related_name="items")
 
+    def first_image(self):
+        return Image.objects.filter(item_id=self).order_by("id").first()
+
     def save(self, *args, **kwargs):
         if not self.slug:
             base_slug = slugify(self.name)
