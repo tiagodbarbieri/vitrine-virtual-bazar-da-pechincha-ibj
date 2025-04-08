@@ -22,6 +22,7 @@ def home(request):
         # Capturando os dados enviados
         form = Search(request.GET)
         items = []
+        images_paths = []
 
         # Verificando se os dados são válidos
         if form.is_valid():
@@ -43,7 +44,9 @@ def home(request):
                 ).order_by(order)
 
             for item in items:
-                # Buscar as imagens aqui..
-                pass
+                image_path = item.first_image().file.name if item.first_image() else ""
+                images_paths.append(image_path)
 
-        return render(request, "home.html", {"form": form, "items": items})
+        return render(
+            request, "home.html", {"form": form, "items": items, "items_and_images": zip(items, images_paths)}
+        )
