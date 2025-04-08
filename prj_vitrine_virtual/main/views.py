@@ -46,11 +46,9 @@ def home(request):
             ).order_by(order)
 
         # Criar lista com as respectivas imagens de cada item (apenas uma imagem)
-        images_paths = []
+        images_urls = []
         for item in items:
-            image_path = item.first_image().file.name if item.first_image() else ""
-            images_paths.append(image_path)
+            image_url = item.first_image().file.url if item.first_image() else ""
+            images_urls.append(image_url)
 
-        return render(
-            request, "home.html", {"form": form, "items": items, "items_and_images": zip(items, images_paths)}
-        )
+        return render(request, "home.html", {"form": form, "items": items, "items_and_images": zip(items, images_urls)})

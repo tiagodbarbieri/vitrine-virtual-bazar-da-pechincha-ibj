@@ -3,15 +3,16 @@
 {% include 'snippets/barra_pesquisa.html' %}
 
 {% if items|length > 0 %}
-{% for item, image_path in items_and_images %}
-        {% if image_path != "" %}
-        <img src="/upload/{{ image_path }}" alt="imagem{{forloop.counter}}">
+    {% for item, image_url in items_and_images %}
+        {% if image_url != "" %}
+            <img src="{{ image_url }}" alt="imagem_{{forloop.counter}}">
         {% else %}
-        <p>Imagem indisponível...</p>
+            <p>Imagem indisponível...</p>
         {% endif %}
-    <p>Nome: {{ item.name }}. Preço: R${{ item.price}}</p>
-{% endfor %}
+        <p>Nome: {{ item.name }}. Preço: R${{ item.price}}</p>
+    {% endfor %}
 {% else %}
     <p>Nenhum item encontrado!</p>
 {% endif %}
+
 {% endblock content %}
