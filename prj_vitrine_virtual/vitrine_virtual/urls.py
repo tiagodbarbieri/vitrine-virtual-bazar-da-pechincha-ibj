@@ -17,7 +17,10 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 from django.views.generic import TemplateView
+
 from main import views
 
 urlpatterns = [
@@ -25,4 +28,4 @@ urlpatterns = [
     path("quem-somos/", TemplateView.as_view(template_name="quem_somos.html"), name="quem-somos"),
     path("contato/", TemplateView.as_view(template_name="contato.html"), name="contato"),
     path("admin/", admin.site.urls),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
