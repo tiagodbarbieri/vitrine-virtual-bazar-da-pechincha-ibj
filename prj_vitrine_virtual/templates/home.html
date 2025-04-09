@@ -1,18 +1,33 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
 {% include 'snippets/barra_pesquisa.html' %}
 
+<div class="container">
+<div class="row row-cols-1 row-cols-md-4 g-4">
 {% if items|length > 0 %}
     {% for item, image_url in items_and_images %}
-        {% if image_url != "" %}
-            <img src="{{ image_url }}" alt="imagem_{{forloop.counter}}">
-        {% else %}
-            <p>Imagem indisponível...</p>
-        {% endif %}
-        <p>Nome: {{ item.name }}. Preço: R${{ item.price}}</p>
+    <div class="col">
+        <div class="card text-center mb-4">
+            {% if image_url != "" %}
+                <img src="{{ image_url }}" alt="imagem_{{forloop.counter}}" class="card-img-top px-4">
+            {% else %}
+                <!-- Imagem vinda do site www.vecteezy.com -->
+                <img src="{% static 'img/imagem_nao_diponivel.jpg' %}" alt="imagem_não_disponível" class="card-img-top px-4">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ item.name }}</h5>
+                <p class="card-text">R$ {{ item.price}}</p>
+                <!-- Link da pagina de detalhe -->
+                <a href="detalhe/{{ item.slug }}" class="btn btn-primary">Detalhes</a>
+            </div>
+        </div>
+    </div>
     {% endfor %}
 {% else %}
-    <p>Nenhum item encontrado!</p>
+    <h5 style="color: gray;">Nenhum item encontrado...</h5>
 {% endif %}
+</div>
+</div>
 
 {% endblock content %}
