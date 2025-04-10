@@ -43,6 +43,9 @@ class Item(models.Model):
     update_date = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, related_name="items")
 
+    class Meta:
+        ordering = ["name"]
+
     def first_image(self):
         return Image.objects.filter(item_id=self).order_by("id").first()
 
@@ -62,9 +65,6 @@ class Item(models.Model):
 
     def __str__(self):
         return f"{self.id} - {self.name}\n{self.description}\nR${self.price},{self.creation_date},{self.category.name}"
-
-    class Meta:
-        ordering = ["name"]
 
 
 # Tabela de imagens

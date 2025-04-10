@@ -54,11 +54,6 @@ def home(request):
         return render(request, "home.html", {"form": form, "items": items, "items_and_images": zip(items, images_urls)})
 
 
-def listar_itens(request):
-    lista_itens = Item.objects.all()  # Obtém todos os itens
-    return render(request, "index.html", {"lista_itens": lista_itens})
-
-
 def detalhe(request, slug):
     item = get_object_or_404(Item, slug=slug)  # Obtém os itens com o respectivo id
     images = Image.objects.filter(item_id=item)  # Obtém a lista de imagens referentes ao respectivo item
