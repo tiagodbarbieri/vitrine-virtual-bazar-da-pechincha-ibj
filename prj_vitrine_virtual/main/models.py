@@ -15,6 +15,11 @@ class Category(models.Model):
     creation_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        verbose_name = "Category"
+        verbose_name_plural = "Categories"
+        ordering = ["name"]
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name)
@@ -58,6 +63,9 @@ class Item(models.Model):
     def __str__(self):
         return f"{self.id} - {self.name}\n{self.description}\nR${self.price},{self.creation_date},{self.category.name}"
 
+    class Meta:
+        ordering = ["name"]
+
 
 # Tabela de imagens
 class Image(models.Model):
@@ -65,6 +73,9 @@ class Image(models.Model):
     file = models.ImageField(upload_to="items/", blank=True)
     status = models.BooleanField(default=True)
     item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name="images")
+
+    class Meta:
+        ordering = ["id"]
 
     def __str__(self):
         return f"{self.file.name} ({self.file.size}) bytes"
