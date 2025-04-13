@@ -32,14 +32,14 @@ class itemAdmin(admin.ModelAdmin):
 # representando o título do fieldset e field_options é um dicionário com informações sobre o fieldset, incluíndo uma lista de campos para serem mostrados nele.
     fieldsets = (
         (None, {
-            "fields": ("name", "description", "price", "category"
+            "fields": ("name", "description", "price", "category","stock"
                 
             ),
         }),
     )
     
     list_display = ["name", "description", "price", "stock", "status"]
-    readonly_fields = ["stock"]
+   # readonly_fields = ["stock"]
     list_filter = ["name"]
     search_fields = ["name", "description", "price", "stock", "status"]
     actions = [ativarItem, desativarItem]
