@@ -24,17 +24,39 @@ def desativarItem(modeLadmin, request, queryset):
     queryset.update(status=False)
 
 
+class imageInLine(admin.TabularInline):
+    model = Image
+
+
 # cria uma classe "itemAdmin" que controla como a lista aparece na Interface admin
 # é necessário uma classe para cada modelo
 class itemAdmin(admin.ModelAdmin):
+    # fieldsets para controlar o layout das páginas “adicionar” e “editar” do admin.
+    # fieldsets é uma lista de tuplas duplas, em que cada tupla dupla representa um
+    # <fieldset> sobre a página de formulário do admin. (Um <fieldset> é uma “seção” do formulário.)
+    # As tuplas duplas estão no formato (name, field_options), onde name é uma string
+    # representando o título do fieldset e field_options é um dicionário com informações sobre o fieldset, incluíndo uma lista de campos para serem mostrados nele.
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": ("name", "description", "price", "category", "stock"),
+            },
+        ),
+    )
+
     list_display = ["name", "description", "price", "stock", "status"]
-    readonly_fields = ["stock"]
+    # readonly_fields = ["stock"]
     list_filter = ["name"]
     search_fields = ["name", "description", "price", "stock", "status"]
     actions = [ativarItem, desativarItem]
+    inlines = [
+        imageInLine,
+    ]
 
 
 class categoryAdmin(admin.ModelAdmin):
+    fields = ("name", "status")
     list_display = ["id", "name", "status"]
     list_filter = ["name"]
     search_fields = ["id", "name", "status"]
