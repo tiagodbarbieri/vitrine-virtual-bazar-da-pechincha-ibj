@@ -28,3 +28,8 @@ urlpatterns = [
     path("contato/", TemplateView.as_view(template_name="contato.html"), name="contato"),
     path("admin/", admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Altera os nomes na página de login do admin
+admin.site.site_title = "ADMIN BAZAR MISSIONÁRIO IBJ"
+admin.site.site_header = "Administração Bazar Missionário IBJ"
+admin.site.index_title = "Administração do Site"
