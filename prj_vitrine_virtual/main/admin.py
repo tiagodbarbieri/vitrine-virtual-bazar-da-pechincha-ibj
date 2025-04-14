@@ -35,7 +35,8 @@ class itemAdmin(admin.ModelAdmin):
     # fieldsets é uma lista de tuplas duplas, em que cada tupla dupla representa um
     # <fieldset> sobre a página de formulário do admin. (Um <fieldset> é uma “seção” do formulário.)
     # As tuplas duplas estão no formato (name, field_options), onde name é uma string
-    # representando o título do fieldset e field_options é um dicionário com informações sobre o fieldset, incluíndo uma lista de campos para serem mostrados nele.
+    # representando o título do fieldset e field_options é um dicionário com informações sobre o fieldset,
+    # incluindo uma lista de campos para serem mostrados nele.
     fieldsets = (
         (
             None,
