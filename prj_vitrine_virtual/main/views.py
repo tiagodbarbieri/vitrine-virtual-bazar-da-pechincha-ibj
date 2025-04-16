@@ -29,8 +29,11 @@ def home(request):
             order = get_order(int(form.cleaned_data["order"]))
         else:
             category = "0"
-            word = ""
-            order = get_order(1)
+            word = form.cleaned_data["word"]
+            try:
+                order = get_order(int(form.cleaned_data["order"]))
+            except KeyError:
+                order = get_order(1)
 
         # Buscar os itens no banco de dados conforme categoria e palavra chave
         # Ordenar os itens
