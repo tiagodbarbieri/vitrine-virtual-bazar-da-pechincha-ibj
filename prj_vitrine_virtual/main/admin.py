@@ -24,8 +24,8 @@ def desativarItem(modeLadmin, request, queryset):
     queryset.update(status=False)
 
 
-class imageInLine(admin.TabularInline):
-    model = Image
+# class imageInLine(admin.TabularInline):
+#    model = Image
 
 
 # cria uma classe "itemAdmin" que controla como a lista aparece na Interface admin
@@ -51,9 +51,9 @@ class itemAdmin(admin.ModelAdmin):
     list_filter = ["name"]
     search_fields = ["name", "description", "price", "stock", "status"]
     actions = [ativarItem, desativarItem]
-    inlines = [
-        imageInLine,
-    ]
+    # inlines = [
+    #    imageInLine,
+    # ]
 
 
 class categoryAdmin(admin.ModelAdmin):
