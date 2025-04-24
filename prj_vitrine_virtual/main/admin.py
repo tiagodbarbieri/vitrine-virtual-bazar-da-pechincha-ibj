@@ -1,6 +1,4 @@
 from django.contrib import admin
-
-# importa os modelos de models.py para a interface de admin
 from .models import Category, Item, Image
 
 # Dados para login:
@@ -24,57 +22,35 @@ def desativarItem(modeLadmin, request, queryset):
     queryset.update(status=False)
 
 
-class imageInLine(admin.TabularInline):
+class ImageInLine(admin.TabularInline):
     model = Image
     extra = 0
     can_delete = True
     show_change_link = False
 
 
-# cria uma classe "itemAdmin" que controla como a lista aparece na Interface admin
+# cria uma classe "ItemAdmin" que controla como a lista aparece na Interface admin
 # é necessário uma classe para cada modelo
-class itemAdmin(admin.ModelAdmin):
-    # fieldsets para controlar o layout das páginas “adicionar” e “editar” do admin.
-    # fieldsets é uma lista de tuplas duplas, em que cada tupla dupla representa um
-    # <fieldset> sobre a página de formulário do admin. (Um <fieldset> é uma “seção” do formulário.)
-    # As tuplas duplas estão no formato (name, field_options), onde name é uma string
-    # representando o título do fieldset e field_options é um dicionário com informações sobre o fieldset,
-    # incluindo uma lista de campos para serem mostrados nele.
-    fieldsets = (
-        (
-            None,
-            {
-                "fields": ("name", "description", "price", "category", "stock"),
-            },
-        ),
-    )
-
-    list_display = ["name", "description", "price", "stock", "status"]
-    # readonly_fields = ["stock"]
-    list_filter = ["name"]
-    search_fields = ["name", "description", "price", "stock", "status"]
+@admin.register(Item)
+class ItemAdmin(admin.ModelAdmin):
+    fields = ["name", "description", "price", "category", "stock"]
+    ordering = ["id"]
+    list_display = ["id", "name", "description", "price", "stock", "status"]
+    list_filter = ["name", "price", "stock", "status"]
+    search_fields = ["id", "name", "description", "price", "stock", "status"]
+    list_display_links = ["name"]
     actions = [ativarItem, desativarItem]
     inlines = [
-        imageInLine,
+        ImageInLine,
     ]
 
 
-class categoryAdmin(admin.ModelAdmin):
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
     fields = ("name", "status")
+    ordering = ["id"]
     list_display = ["id", "name", "status"]
     list_filter = ["name"]
     search_fields = ["id", "name", "status"]
+    list_display_links = ["name"]
     actions = [ativarItem, desativarItem]
-
-
-class imageAdmin(admin.ModelAdmin):
-    list_display = ["id", "file", "status", "item_id"]
-    sortable_by = ["id"]
-    search_fields = ["file", "item_id"]
-    actions = [ativarItem, desativarItem]
-
-
-# add cada modelo/tabela na interface admin, add também as class admin, se não estiver aqui, não aprece no site
-admin.site.register(Category, categoryAdmin)
-admin.site.register(Item, itemAdmin)
-# admin.site.register(Image, imageAdmin)
