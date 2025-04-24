@@ -4,6 +4,7 @@
 
 from django.db import models
 from django.utils.text import slugify
+from pathlib import Path
 
 
 # Tabela de categorias
@@ -16,8 +17,8 @@ class Category(models.Model):
     update_date = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = "Category"
-        verbose_name_plural = "Categories"
+        verbose_name = "categoria"
+        verbose_name_plural = "categorias"
         ordering = ["name"]
 
     def save(self, *args, **kwargs):
@@ -44,6 +45,8 @@ class Item(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, related_name="items")
 
     class Meta:
+        verbose_name = "item"
+        verbose_name_plural = "itens"
         ordering = ["name"]
 
     def first_image(self):
@@ -64,18 +67,20 @@ class Item(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.id} - {self.name}\n{self.description}\nR${self.price},{self.creation_date},{self.category.name}"
+        return f"{self.id} - {self.name}"
 
 
 # Tabela de imagens
 class Image(models.Model):
     id = models.BigAutoField(primary_key=True)
-    file = models.ImageField(upload_to="items/", blank=True)
+    file = models.ImageField(upload_to="items/")
     status = models.BooleanField(default=True)
     item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name="images")
 
     class Meta:
+        verbose_name = "imagem"
+        verbose_name_plural = "imagens"
         ordering = ["id"]
 
     def __str__(self):
-        return f"{self.file.name} ({self.file.size}) bytes"
+        return f"{self.id} - {Path(self.file.name).name}"

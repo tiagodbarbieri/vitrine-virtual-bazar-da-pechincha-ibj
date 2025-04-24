@@ -24,8 +24,11 @@ def desativarItem(modeLadmin, request, queryset):
     queryset.update(status=False)
 
 
-# class imageInLine(admin.TabularInline):
-#    model = Image
+class imageInLine(admin.TabularInline):
+    model = Image
+    extra = 0
+    can_delete = True
+    show_change_link = False
 
 
 # cria uma classe "itemAdmin" que controla como a lista aparece na Interface admin
@@ -51,9 +54,9 @@ class itemAdmin(admin.ModelAdmin):
     list_filter = ["name"]
     search_fields = ["name", "description", "price", "stock", "status"]
     actions = [ativarItem, desativarItem]
-    # inlines = [
-    #    imageInLine,
-    # ]
+    inlines = [
+        imageInLine,
+    ]
 
 
 class categoryAdmin(admin.ModelAdmin):
@@ -68,9 +71,10 @@ class imageAdmin(admin.ModelAdmin):
     list_display = ["id", "file", "status", "item_id"]
     sortable_by = ["id"]
     search_fields = ["file", "item_id"]
+    actions = [ativarItem, desativarItem]
 
 
 # add cada modelo/tabela na interface admin, add também as class admin, se não estiver aqui, não aprece no site
 admin.site.register(Category, categoryAdmin)
 admin.site.register(Item, itemAdmin)
-admin.site.register(Image, imageAdmin)
+# admin.site.register(Image, imageAdmin)
