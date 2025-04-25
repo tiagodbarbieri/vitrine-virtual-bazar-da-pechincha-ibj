@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+{% include 'snippets/barra_pesquisa.html' %}
+
+<div class="container">
+<div class="row row-cols-1 row-cols-md-4 g-4">
+{% if items|length > 0 %}
+    {% for item, image_url in items_and_images %}
+    <div class="col">
+        <div class="card text-center mb-4">
+            {% if image_url != "" %}
+                <img src="{{ image_url }}" alt="imagem_{{forloop.counter}}" class="img-square">
+            {% else %}
+                <!-- Imagem vinda do site www.vecteezy.com -->
+                <img src="{% static 'img/imagem_nao_diponivel.jpg' %}" alt="imagem_não_disponível" class="img-square">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ item.name }}</h5>
+                <p class="card-text">R$ {{ item.price}}</p>
+                <!-- Link da pagina de detalhe -->
+                <a href="detalhe/{{ item.slug }}" class="btn btn-primary">Detalhes</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <h5 style="color: gray;">Nenhum item encontrado...</h5>
+{% endif %}
+</div>
+</div>
+
+{% endblock content %}
