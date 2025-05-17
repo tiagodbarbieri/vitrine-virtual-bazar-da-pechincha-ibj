@@ -4,10 +4,10 @@ Projeto realizado no Projeto Integrador I -1º Semestre de 2025 da Universidade 
 
 Colaboradores              | RA
 ---------------------------|---
-Fernado da Silva Pinto     | 23222055  
-João Marcellino Toldo      | 23204753  
-Jônatas Marques de Farias  | 2204866  
-Jorge Roberto Isabella     | 23227995  
-Osmar Mendes dos Santos    | 23216216  
-Rubens Eduardo de Carvalho | 232026742  
+Fernado da Silva Pinto     | 23222055
+João Marcellino Toldo      | 23204753
+Jônatas Marques de Farias  | 2204866
+Jorge Roberto Isabella     | 23227995
+Osmar Mendes dos Santos    | 23216216
+Rubens Eduardo de Carvalho | 23202674
 Tiago Diniz Barbieri       | 23206102
