@@ -160,3 +160,6 @@ LOGGING = {
         },
     },
 }
+
+# Redefine o caminho para a pagina "home" caso o usuário não estiver logado
+LOGIN_URL = "/"
