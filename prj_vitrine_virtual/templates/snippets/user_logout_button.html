@@ -5,5 +5,8 @@
 <div class="dropdown-menu dropdown-menu-right">
     <a class="dropdown-item" href="/users/minha-conta/"><i class="fas fa-home"></i> Minha conta</a> 
     <a class="dropdown-item" href="/users/minhas-reservas/"><i class="fas fa-shopping-cart"></i> Minhas reservas</a>
+    {% if user.is_staff %}
+    <a class="dropdown-item" href="/admin/"><i class="fas fa-tools"></i> Área administrativa</a>
+    {% endif %}
     <a class="dropdown-item" href="/users/logout/"><i class="fas fa-sign-out-alt"></i> Sair</a>
 </div>
