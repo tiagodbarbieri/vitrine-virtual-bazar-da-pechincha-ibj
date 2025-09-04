@@ -3,19 +3,24 @@
 
 <!-- dropdown menu -->
 <div class="dropdown-menu dropdown-menu-right">
-<form class="px-4 py-3" action="/users/minhas-reservas">
+<form class="px-4 py-3" method="POST" id="dropdown-login" action="/users/login/">
+    {% csrf_token %}
     <div class="form-group">
-        <label for="exampleDropdownFormEmail1">Email:</label>
-        <input type="email" class="form-control" id="exampleDropdownFormEmail1" placeholder="email@exemplo.com">
+        <label for="username_label">Usuário:</label>
+        <input type="text" class="form-control" id="username" name="username" placeholder="username">
     </div>
     <div class="form-group">
-        <label for="exampleDropdownFormPassword1">Senha:</label>
-        <input type="password" class="form-control" id="exampleDropdownFormPassword1" placeholder="digite a senha">
+        <label for="password_label">Senha:</label>
+        <input type="password" class="form-control" id="password" name="password" placeholder="digite a senha">
     </div>
     <div class="text-center mt-4">
         <button type="submit" class="btn btn-primary w-100">ENTRAR</button>
     </div>
 </form>
+
+<!-- Mensagens de erro username e/ou senha inválidos -->
+<div id="login-message"></div>
+
 <div class="dropdown-divider"></div>
 <a class="dropdown-item" href="/users/redefinir-senha/">Esqueceu sua senha?</a>
 <a class="dropdown-item" href="/users/cadastro/">Não possui conta? Cadastrar</a>
