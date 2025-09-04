@@ -31,10 +31,11 @@ def login(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             django_login(request, user)
-            return redirect("/")
+            return JsonResponse({"success": True})
         else:
-            return JsonResponse({"success": False, "error": "Usuário e/ou senha incorretos."})
-    return redirect("/")
+            return JsonResponse({"success": False})
+    else:
+        return redirect("/")
 
 
 @login_required
