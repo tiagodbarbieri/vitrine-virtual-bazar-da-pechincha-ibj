@@ -4,12 +4,80 @@
 
 <div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-md-8 mb-3">
+        <div class="col-md-12 mb-3">
             <h2>CADASTRO</h2>
             <hr />
-            <p>Acrescentar forms para preenchimento de formulário aqui!</p>
         </div>
     </div>
+    <form action="/users/cadastro/" method="post">
+        {% csrf_token %}
+        <div class="row align-items-center">
+            <div class="col-md-4 mb-3">
+                <h4>Dados de acesso</h4>
+            </div>
+            <div class="col-md-4 mb-3">
+                <h4>Dados pessoais</h4>
+            </div>
+        </div>
+        <div class="row align-items-center">
+            <div class="col-md-4">
+                <label for="id_username">{{ forms.username.label}}</label>
+                {{ forms.username}}
+            </div>
+            <div class="col-md-4">
+                <label for="id_first_name">{{ forms.first_name.label }}</label>
+                {{ forms.first_name }}
+            </div>
+            <div class="col-md-4">
+                <label for="id_phone_number">{{ forms.phone_number.label }}</label>
+                {{ forms.phone_number }}
+            </div>
+        </div>
+        <div class="row align-items-center">
+            <div class="col-md-4">
+                <label for="id_email">{{ forms.email.label }}</label>
+                {{ forms.email }}      
+            </div>
+            <div class="col-md-4">
+                <label for="id_last_name">{{ forms.last_name.label }}</label>
+                {{ forms.last_name }}
+            </div>
+            <div class="col-md-4">
+                <label for="id_gender">{{ forms.gender.label }}</label>
+                {{ forms.gender }}
+            </div>
+        </div>
+        <div class="row align-items-center">
+            <div class="col-md-4">
+                <label for="id_password">{{ forms.password.label}}</label>
+                {{ forms.password}}
+            </div>
+            <div class="col-md-4">
+                <label for="id_cpf">{{ forms.cpf.label }}</label>
+                {{ forms.cpf }}
+            </div>
+            <div class="col-md-4">
+                <label></label>
+                <div class="form-check mb-3">
+                    {{ forms.privacy_police }}
+                    <label for="id_privacy_police" class="form-check-label">{{ forms.privacy_police.label }}</label>
+                </div>
+            </div>
+        </div>
+        <div class="row align-items-end">
+            <div class="col-md-4">
+                <label for="id_password_confirmation">{{ forms.password_confirmation.label}}</label>
+                {{ forms.password_confirmation}}
+            </div>
+            <div class="col-md-4">
+                <label for="id_birthday">{{ forms.birthday.label }}</label>
+                {{ forms.birthday }}
+            </div>
+            <div class="col-md-4 mb-3">
+                <button type="submit" class="btn btn-primary w-100">CADASTRAR</button>
+            </div>
+        </div>
+    </form>
 </div>
 
 {% endblock content %}
