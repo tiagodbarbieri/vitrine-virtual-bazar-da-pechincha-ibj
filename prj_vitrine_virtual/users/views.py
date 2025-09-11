@@ -4,10 +4,12 @@ from django.contrib.auth import logout as django_logout
 from django.contrib.auth import login as django_login
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
+from users.forms import Register
 
 
 def cadastro(request):
-    return render(request, "cadastro.html")
+    forms = Register(request.GET)
+    return render(request, "cadastro.html", {"forms": forms})
 
 
 def redefinir_senha(request):
