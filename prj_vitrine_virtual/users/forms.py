@@ -1,9 +1,7 @@
 from django import forms
-
-# from django.contrib.auth.models import User
-# from users.models import UserInfo
-
-GENDER = [("M", "Masculino"), ("F", "Feminino"), ("O", "Outro")]
+from users.models import GENDER
+from users.models import UserInfo
+from django.contrib.auth.models import User
 
 
 class Register(forms.Form):
@@ -58,4 +56,17 @@ class Register(forms.Form):
         widget=forms.CheckboxInput(attrs={"class": "form-check-input"}),
     )
 
-    # Acrescentar métodos de validação e alerta de erros
+    # Métodos de validação e alerta de erros
+
+    # Verificar se o nome do usuário já está cadastrado
+    def clean_username(self):
+        username = self.cleaned_data.get("username")
+        if User.objects.filter(username__contains=username):
+            raise forms.ValidationError(f'O nome de usuário "{username}" já existe!')
+        return username
+
+    # Verificar se o e-mail já está cadastrado
+    # Verificar se o password está forte
+    # Verificar se o password e a confirmação estão iguais
+    # Verificar se o CPF está correto
+    # Verificar se o número de telefone está correto
