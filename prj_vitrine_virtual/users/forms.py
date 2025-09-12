@@ -1,7 +1,7 @@
 from django import forms
 from users.models import GENDER
-from users.models import UserInfo
 from django.contrib.auth.models import User
+from django.contrib.auth.password_validation import validate_password
 
 
 class Register(forms.Form):
@@ -56,17 +56,39 @@ class Register(forms.Form):
         widget=forms.CheckboxInput(attrs={"class": "form-check-input"}),
     )
 
+    # ---------------------------------------------------------------------------------------------
     # Métodos de validação e alerta de erros
+    # ---------------------------------------------------------------------------------------------
 
     # Verificar se o nome do usuário já está cadastrado
     def clean_username(self):
         username = self.cleaned_data.get("username")
         if User.objects.filter(username__contains=username):
-            raise forms.ValidationError(f'O nome de usuário "{username}" já existe!')
+            raise forms.ValidationError(f'O nome de usuário "{username}" já está cadastrado!')
         return username
 
     # Verificar se o e-mail já está cadastrado
-    # Verificar se o password está forte
-    # Verificar se o password e a confirmação estão iguais
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+
+        # Acrescentar validação de e-mail do Django
+
+        if User.objects.filter(email__contains=email):
+            raise forms.ValidationError(f'O e-mail "{email}" já está cadastrado!')
+        return email
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get("password")
+        password_confirmation = cleaned_data.get("password_confirmation")
+
+        # Validando o password com as funções Django
+        validate_password(password)
+
+        # Verificar se o password e a confirmação estão iguais
+        if password != password_confirmation:
+            msg = "As senhas digitadas não coincidem!"
+            self.add_error("password_confirmation", msg)
+
     # Verificar se o CPF está correto
     # Verificar se o número de telefone está correto
