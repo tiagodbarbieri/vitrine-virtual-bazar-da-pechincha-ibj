@@ -78,6 +78,21 @@
             </div>
         </div>
     </form>
+    
+    {% if forms.errors %}
+    <ul class="list-group text-center">
+        {% for field in forms %}
+            {% for error in field.errors %}
+                <li class="list-group-item list-group-item-danger">{{ field.label }}: {{ error }}</li>
+            {% endfor %}
+        {% endfor %}
+
+        {% for error in forms.non_field_errors %}
+            <li class="list-group-item list-group-item-danger">{{ error }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    
 </div>
 
 {% endblock content %}
