@@ -1,7 +1,11 @@
 from django import forms
-from users.models import GENDER
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
+
+from users.models import GENDER
+from users.models import UserInfo
+from validate_docbr import CPF  # pip install validate-docbr
+from re import sub, match
 
 
 class Register(forms.Form):
@@ -34,7 +38,7 @@ class Register(forms.Form):
     )
     cpf = forms.CharField(
         label="CPF",
-        max_length=14,
+        max_length=11,
         widget=forms.TextInput(attrs={"class": "form-control mb-3", "placeholder": "Somente números"}),
     )
     birthday = forms.DateField(
@@ -91,4 +95,19 @@ class Register(forms.Form):
             self.add_error("password_confirmation", msg)
 
     # Verificar se o CPF está correto
-    # Verificar se o número de telefone está correto
+    def clean_cpf(self):
+        cpf = self.cleaned_data.get("cpf")
+        validator = CPF()
+        if UserInfo.objects.filter(cpf__contains=validator.mask(cpf)):
+            raise forms.ValidationError("Esse CPF já está cadastrado!")
+        if not validator.validate(cpf):
+            raise forms.ValidationError("O CPF informado é inválido!")
+        return cpf
+
+    # Verificar se o número de celular está correto
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data.get("phone_number")
+        cellphone = sub("[^0-9]", "", phone_number)
+        if not bool(match("^([14689][0-9]|2[12478]|3([1-5]|[7-8])|5([13-5])|7[193-7])9[0-9]{8}$", cellphone)):
+            raise forms.ValidationError("O número de celular informado é invalido! informe o DDD + número.")
+        return phone_number
