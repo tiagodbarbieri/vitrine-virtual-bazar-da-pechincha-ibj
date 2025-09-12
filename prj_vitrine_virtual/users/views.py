@@ -8,7 +8,13 @@ from users.forms import Register
 
 
 def cadastro(request):
-    forms = Register(request.GET)
+    if request.method == "POST":
+        forms = Register(request.POST)
+        if forms.is_valid():
+            # Registrar o usuário
+            pass
+    else:
+        forms = Register()
     return render(request, "cadastro.html", {"forms": forms})
 
 
