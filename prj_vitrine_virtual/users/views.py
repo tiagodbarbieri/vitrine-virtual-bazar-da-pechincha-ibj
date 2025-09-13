@@ -9,13 +9,13 @@ from users.forms import Register
 
 def cadastro(request):
     if request.method == "POST":
-        forms = Register(request.POST)
-        if forms.is_valid():
+        form = Register(request.POST)
+        if form.is_valid():
             # Registrar o usuário
             pass
     else:
-        forms = Register()
-    return render(request, "cadastro.html", {"forms": forms})
+        form = Register()
+    return render(request, "cadastro.html", {"form": form})
 
 
 def redefinir_senha(request):
