@@ -69,7 +69,9 @@ def minha_conta(request):
                 "first_name": user.first_name,
                 "last_name": user.last_name,
                 "cpf": user_info.cpf,
-                "birthday": (f"{user_info.birthday.year}-{user_info.birthday.month}-{user_info.birthday.day}"),
+                "birthday": (
+                    f"{user_info.birthday.year:04d}-{user_info.birthday.month:02d}-{user_info.birthday.day:02d}"
+                ),
                 "phone_number": user_info.phone_number,
                 "gender": user_info.gender,
                 "privacy_police": user_info.privacy_police,
