@@ -13,52 +13,56 @@ class Register(forms.Form):
     username = forms.CharField(
         label="Nome de usuário",
         max_length=150,
-        widget=forms.TextInput(attrs={"class": "form-control mb-3", "placeholder": "Ex: joaosilva"}),
+        widget=forms.TextInput(attrs={"class": "form-control mb-3", "placeholder": "Ex: joaosilva", "tabindex": "1"}),
     )
     email = forms.EmailField(
         label="E-mail",
-        widget=forms.EmailInput(attrs={"class": "form-control mb-3", "placeholder": "exemplo@dominio.com"}),
+        widget=forms.EmailInput(
+            attrs={"class": "form-control mb-3", "placeholder": "exemplo@dominio.com", "tabindex": "2"}
+        ),
     )
     password = forms.CharField(
         label="Senha",
-        widget=forms.PasswordInput(attrs={"class": "form-control mb-3"}),
+        widget=forms.PasswordInput(attrs={"class": "form-control mb-3", "tabindex": "3"}),
     )
     password_confirmation = forms.CharField(
         label="Confirme a senha",
-        widget=forms.PasswordInput(attrs={"class": "form-control mb-3"}),
+        widget=forms.PasswordInput(attrs={"class": "form-control mb-3", "tabindex": "4"}),
     )
     first_name = forms.CharField(
         label="Primeiro nome",
         max_length=150,
-        widget=forms.TextInput(attrs={"class": "form-control mb-3", "placeholder": "Ex: João"}),
+        widget=forms.TextInput(attrs={"class": "form-control mb-3", "placeholder": "Ex: João", "tabindex": "5"}),
     )
     last_name = forms.CharField(
         label="Segundo nome",
         max_length=150,
-        widget=forms.TextInput(attrs={"class": "form-control mb-3", "placeholder": "Ex: da Silva"}),
+        widget=forms.TextInput(attrs={"class": "form-control mb-3", "placeholder": "Ex: da Silva", "tabindex": "6"}),
     )
     cpf = forms.CharField(
         label="CPF",
         max_length=14,
-        widget=forms.TextInput(attrs={"class": "form-control mb-3", "placeholder": "Ex: 123.456.789-10"}),
+        widget=forms.TextInput(
+            attrs={"class": "form-control mb-3", "placeholder": "Ex: 123.456.789-10", "tabindex": "7"}
+        ),
     )
     birthday = forms.DateField(
         label="Data de nascimento",
-        widget=forms.DateInput(attrs={"type": "date", "class": "form-control mb-3"}),
+        widget=forms.DateInput(attrs={"type": "date", "class": "form-control mb-3", "tabindex": "8"}),
     )
     phone_number = forms.CharField(
         label="Celular",
         max_length=20,
-        widget=forms.TextInput(attrs={"class": "form-control mb-3", "placeholder": "DDD + número"}),
+        widget=forms.TextInput(attrs={"class": "form-control mb-3", "placeholder": "DDD + número", "tabindex": "9"}),
     )
     gender = forms.ChoiceField(
         label="Gênero",
         choices=GENDER,
-        widget=forms.Select(attrs={"class": "form-control mb-3"}),
+        widget=forms.Select(attrs={"class": "form-control mb-3", "tabindex": "10"}),
     )
     privacy_police = forms.BooleanField(
         label="Aceito a Política de Privacidade.",
-        widget=forms.CheckboxInput(attrs={"class": "form-check-input"}),
+        widget=forms.CheckboxInput(attrs={"class": "form-check-input", "tabindex": "11"}),
     )
 
     # ---------------------------------------------------------------------------------------------
