@@ -4,6 +4,7 @@ from django.contrib.auth.password_validation import validate_password
 
 from users.models import GENDER
 from users.models import UserInfo
+from users.utils import only_digits
 from validate_docbr import CPF  # pip install validate-docbr
 from re import sub, match
 
@@ -38,8 +39,8 @@ class Register(forms.Form):
     )
     cpf = forms.CharField(
         label="CPF",
-        max_length=11,
-        widget=forms.TextInput(attrs={"class": "form-control mb-3", "placeholder": "Somente números"}),
+        max_length=14,
+        widget=forms.TextInput(attrs={"class": "form-control mb-3", "placeholder": "Ex: 123.456.789-10"}),
     )
     birthday = forms.DateField(
         label="Data de nascimento",
@@ -86,28 +87,70 @@ class Register(forms.Form):
         password = cleaned_data.get("password")
         password_confirmation = cleaned_data.get("password_confirmation")
 
-        # Validando o password com as funções Django
-        validate_password(password)
-
         # Verificar se o password e a confirmação estão iguais
         if password != password_confirmation:
             msg = "As senhas digitadas não coincidem!"
             self.add_error("password_confirmation", msg)
 
+        # Validando o password com as funções Django
+        validate_password(str(password))
+
+        return {"password": password, "password_confirmation": password_confirmation}
+
     # Verificar se o CPF está correto
     def clean_cpf(self):
         cpf = self.cleaned_data.get("cpf")
         validator = CPF()
-        if UserInfo.objects.filter(cpf__contains=validator.mask(cpf)):
+        if UserInfo.objects.filter(cpf__contains=validator.mask(only_digits(str(cpf)))):
             raise forms.ValidationError("Esse CPF já está cadastrado!")
-        if not validator.validate(cpf):
+        if not validator.validate(str(cpf)):
             raise forms.ValidationError("O CPF informado é inválido!")
         return cpf
 
     # Verificar se o número de celular está correto
     def clean_phone_number(self):
         phone_number = self.cleaned_data.get("phone_number")
-        cellphone = sub("[^0-9]", "", phone_number)
+        cellphone = sub("[^0-9]", "", str(phone_number))
         if not bool(match("^([14689][0-9]|2[12478]|3([1-5]|[7-8])|5([13-5])|7[193-7])9[0-9]{8}$", cellphone)):
             raise forms.ValidationError("O número de celular informado é invalido! informe o DDD + número.")
         return phone_number
+
+
+class Update(Register):
+    def __init__(self, *args, user_logged, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+        self.user_logged = user_logged
+
+    # Verificar se o nome do usuário já está cadastrado
+    def clean_username(self):
+        username = self.cleaned_data.get("username")
+        if username == self.user_logged.username:
+            return username
+        if User.objects.filter(username__contains=username):
+            raise forms.ValidationError(f'O nome de usuário "{username}" já está cadastrado!')
+        return username
+
+    # Verificar se o e-mail já está cadastrado
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+
+        # Acrescentar validação de e-mail do Django
+
+        if email == self.user_logged.email:
+            return email
+        if User.objects.filter(email__contains=email):
+            raise forms.ValidationError(f'O e-mail "{email}" já está cadastrado!')
+        return email
+
+    # Verificar se o CPF está correto
+    def clean_cpf(self):
+        user_logged_cpf = UserInfo.objects.get(user=self.user_logged).cpf
+        cpf = only_digits(str(self.cleaned_data.get("cpf")))
+        validator = CPF()
+        if validator.mask(cpf) == user_logged_cpf:
+            return cpf
+        if UserInfo.objects.filter(cpf__contains=validator.mask(only_digits(str(cpf)))):
+            raise forms.ValidationError("Esse CPF já está cadastrado!")
+        if not validator.validate(str(cpf)):
+            raise forms.ValidationError("O CPF informado é inválido!")
+        return cpf
