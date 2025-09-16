@@ -17,16 +17,16 @@ def cadastro(request):
         if form.is_valid():
             cpf_maker = CPF()
 
-            username = form.cleaned_data["username"]
-            email = form.cleaned_data["email"]
-            password = form.cleaned_data["password"]
-            first_name = form.cleaned_data["first_name"]
-            last_name = form.cleaned_data["last_name"]
-            cpf = form.cleaned_data["cpf"]
-            birthday = form.cleaned_data["birthday"]
-            phone_number = form.cleaned_data["phone_number"]
-            gender = form.cleaned_data["gender"]
-            privacy_police = form.cleaned_data["privacy_police"]
+            username = request.POST.get("username")
+            email = request.POST.get("email")
+            password = request.POST.get("password")
+            first_name = request.POST.get("first_name")
+            last_name = request.POST.get("last_name")
+            cpf = request.POST.get("cpf")
+            birthday = request.POST.get("birthday")
+            phone_number = request.POST.get("phone_number")
+            gender = request.POST.get("gender")
+            privacy_police = True if (request.POST.get("privacy_police")) == "on" else False
 
             user = User.objects.create_user(
                 username=username,
