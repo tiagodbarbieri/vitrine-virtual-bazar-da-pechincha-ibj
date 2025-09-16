@@ -5,6 +5,7 @@ from users.views import minha_conta
 from users.views import minhas_reservas
 from users.views import login
 from users.views import logout
+from users.views import excluir_conta
 
 
 urlpatterns = [
@@ -14,4 +15,5 @@ urlpatterns = [
     path("minhas-reservas/", minhas_reservas, name="minhas-reservas"),
     path("login/", login, name="login"),
     path("logout/", logout, name="logout"),
+    path("excluir-conta/", excluir_conta, name="excluir-conta"),
 ]

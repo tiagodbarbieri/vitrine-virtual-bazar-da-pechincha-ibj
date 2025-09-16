@@ -73,8 +73,12 @@
                 <label for="id_birthday">{{ form.birthday.label }}</label>
                 {{ form.birthday }}
             </div>
-            <div class="col-md-4 mb-3">
+            <div class="col-md-2 mb-3">
                 <button type="submit" class="btn btn-primary w-100" tabindex="11">ATUALIZAR</button>
+            </div>
+            <div class="col-md-2 mb-3">
+                {% csrf_token %}
+                <button type="button" class="btn btn-danger" tabindex="12" onclick="delete_account()">EXCLUIR CONTA</button>
             </div>
         </div>
     </form>
@@ -94,5 +98,14 @@
     {% endif %}
  
 </div>
+
+<script>
+    function delete_account(){
+        if (confirm("Deseja realmente excluir sua conta?") == true) {
+            // Chamar a função de exclusão de conta
+            window.location.href = '/users/excluir-conta/';
+        }
+    }
+</script>
 
 {% endblock content %}

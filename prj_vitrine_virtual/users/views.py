@@ -59,27 +59,6 @@ def minha_conta(request):
     user = User.objects.get(username=request.user.username)
     user_info = UserInfo.objects.get(user=user)
 
-    if request.method == "GET":
-        # preencher form com os dados do usuário
-        form = Update(
-            user_logged=request.user,
-            initial={
-                "username": user.username,
-                "email": user.email,
-                "first_name": user.first_name,
-                "last_name": user.last_name,
-                "cpf": user_info.cpf,
-                "birthday": (
-                    f"{user_info.birthday.year:04d}-{user_info.birthday.month:02d}-{user_info.birthday.day:02d}"
-                ),
-                "phone_number": user_info.phone_number,
-                "gender": user_info.gender,
-                "privacy_police": user_info.privacy_police,
-            },
-        )
-
-        return render(request, "minha_conta.html", {"form": form})
-
     if request.method == "POST":
         form = Update(request.POST, user_logged=request.user)
         if form.is_valid():
@@ -116,6 +95,26 @@ def minha_conta(request):
             return render(request, "dados_atualizados.html", {"user_first_name": first_name})
         else:
             return render(request, "minha_conta.html", {"form": form})
+    else:
+        # preencher form com os dados do usuário
+        form = Update(
+            user_logged=request.user,
+            initial={
+                "username": user.username,
+                "email": user.email,
+                "first_name": user.first_name,
+                "last_name": user.last_name,
+                "cpf": user_info.cpf,
+                "birthday": (
+                    f"{user_info.birthday.year:04d}-{user_info.birthday.month:02d}-{user_info.birthday.day:02d}"
+                ),
+                "phone_number": user_info.phone_number,
+                "gender": user_info.gender,
+                "privacy_police": user_info.privacy_police,
+            },
+        )
+
+        return render(request, "minha_conta.html", {"form": form})
 
 
 @login_required
@@ -142,3 +141,10 @@ def logout(request):
     user_first_name = request.user.first_name
     django_logout(request)
     return render(request, "logout.html", {"user_first_name": user_first_name})
+
+
+@login_required
+def excluir_conta(request):
+    user_first_name = request.user.first_name
+    request.user.delete()
+    return render(request, "conta_excluida.html", {"user_first_name": user_first_name})
