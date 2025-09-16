@@ -14,7 +14,7 @@
         <input type="password" class="form-control" id="password" name="password" placeholder="digite a senha">
     </div>
     <div class="text-center mt-4">
-        <button type="submit" class="btn btn-primary w-100" id="submit-btn">ENTRAR</button>
+        <button type="submit" class="btn btn-primary w-100" id="submit-btn" onclick="user_login()">ENTRAR</button>
     </div>
 </form>
 
@@ -25,38 +25,3 @@
 <a class="dropdown-item" href="/users/redefinir-senha/">Esqueceu sua senha?</a>
 <a class="dropdown-item" href="/users/cadastro/">Não possui conta? Cadastrar</a>
 </div>
-
-<script>
-    // Impede que o clique feche o dropdown
-    document.getElementById("submit-btn").addEventListener("click", function(e){
-        e.stopPropagation();
-    });
-
-    // Função que envia os dados do formulário e aguarda a resposta do servidor
-    // Caso o usuário tiver digitado corretamente o usuário e senha é feito o login e reencaminhado para a "/"
-    // Caso o usuário tiver digitado incorretamente o usuário e senha é apresentado uma mensagem de erro
-    // Com essa função não há o carregamento da página inteira, apenas é atualizado o campo "login-message"
-    const dropdown_form = document.getElementById("dropdown-login");
-    dropdown_form.addEventListener("submit", async function(event){
-        event.preventDefault(); // Impede o envio tradicional do formulário
-        const formData = new FormData(this); // Formulário
-        const token = document.getElementsByName("csrfmiddlewaretoken").values(); // Token CSRF exigido pelo Django
-        const response = await fetch('/users/login/', {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': token // Inserção do token no cabeçalho
-            },
-            body: formData
-        });
-        const data = await response.json();
-        const login_message = document.getElementById("login-message")
-            if (data.success){
-                login_message.textContent = "Login realizado com sucesso!";
-                login_message.style.color = "green";
-                window.location.href = '/';
-            } else {
-                login_message.textContent = "Usuário e/ou senha inválidos!";
-                login_message.style.color = "red";
-            }
-    });
-</script>
