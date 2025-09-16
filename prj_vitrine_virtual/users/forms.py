@@ -72,7 +72,7 @@ class Register(forms.Form):
     # Verificar se o nome do usuário já está cadastrado
     def clean_username(self):
         username = self.cleaned_data.get("username")
-        if User.objects.filter(username__contains=username):
+        if User.objects.filter(username=username):
             raise forms.ValidationError(f'O nome de usuário "{username}" já está cadastrado!')
         return username
 
@@ -82,7 +82,7 @@ class Register(forms.Form):
 
         # Acrescentar validação de e-mail do Django
 
-        if User.objects.filter(email__contains=email):
+        if User.objects.filter(email=email):
             raise forms.ValidationError(f'O e-mail "{email}" já está cadastrado!')
         return email
 
@@ -105,7 +105,7 @@ class Register(forms.Form):
     def clean_cpf(self):
         cpf = self.cleaned_data.get("cpf")
         validator = CPF()
-        if UserInfo.objects.filter(cpf__contains=validator.mask(only_digits(str(cpf)))):
+        if UserInfo.objects.filter(cpf=validator.mask(only_digits(str(cpf)))):
             raise forms.ValidationError("Esse CPF já está cadastrado!")
         if not validator.validate(str(cpf)):
             raise forms.ValidationError("O CPF informado é inválido!")
@@ -130,7 +130,7 @@ class Update(Register):
         username = self.cleaned_data.get("username")
         if username == self.user_logged.username:
             return username
-        if User.objects.filter(username__contains=username):
+        if User.objects.filter(username=username):
             raise forms.ValidationError(f'O nome de usuário "{username}" já está cadastrado!')
         return username
 
@@ -142,7 +142,7 @@ class Update(Register):
 
         if email == self.user_logged.email:
             return email
-        if User.objects.filter(email__contains=email):
+        if User.objects.filter(email=email):
             raise forms.ValidationError(f'O e-mail "{email}" já está cadastrado!')
         return email
 
@@ -153,7 +153,7 @@ class Update(Register):
         validator = CPF()
         if validator.mask(cpf) == user_logged_cpf:
             return cpf
-        if UserInfo.objects.filter(cpf__contains=validator.mask(only_digits(str(cpf)))):
+        if UserInfo.objects.filter(cpf=validator.mask(only_digits(str(cpf)))):
             raise forms.ValidationError("Esse CPF já está cadastrado!")
         if not validator.validate(str(cpf)):
             raise forms.ValidationError("O CPF informado é inválido!")
