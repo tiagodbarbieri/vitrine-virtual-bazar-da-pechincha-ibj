@@ -6,7 +6,8 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from users.models import UserInfo
-from users.forms import Register
+from users.forms import Register, Update
+from users.utils import only_digits
 from validate_docbr import CPF
 
 
@@ -36,7 +37,7 @@ def cadastro(request):
             )
 
             UserInfo.objects.create(
-                cpf=cpf_maker.mask(cpf),
+                cpf=cpf_maker.mask(only_digits(cpf)),
                 birthday=birthday,
                 phone_number=phone_number,
                 gender=gender,
@@ -55,7 +56,64 @@ def redefinir_senha(request):
 
 @login_required
 def minha_conta(request):
-    return render(request, "minha_conta.html")
+    user = User.objects.get(username=request.user.username)
+    user_info = UserInfo.objects.get(user=user)
+
+    if request.method == "GET":
+        # preencher form com os dados do usuário
+        form = Update(
+            user_logged=request.user,
+            initial={
+                "username": user.username,
+                "email": user.email,
+                "first_name": user.first_name,
+                "last_name": user.last_name,
+                "cpf": user_info.cpf,
+                "birthday": (f"{user_info.birthday.year}-{user_info.birthday.month}-{user_info.birthday.day}"),
+                "phone_number": user_info.phone_number,
+                "gender": user_info.gender,
+                "privacy_police": user_info.privacy_police,
+            },
+        )
+
+        return render(request, "minha_conta.html", {"form": form})
+
+    if request.method == "POST":
+        form = Update(request.POST, user_logged=request.user)
+        if form.is_valid():
+            cpf_maker = CPF()
+
+            # Obtendo dados do formulário
+            username = request.POST.get("username")
+            email = request.POST.get("email")
+            password = request.POST.get("password")
+            first_name = request.POST.get("first_name")
+            last_name = request.POST.get("last_name")
+            cpf = request.POST.get("cpf")
+            birthday = request.POST.get("birthday")
+            phone_number = request.POST.get("phone_number")
+            gender = request.POST.get("gender")
+
+            # Atualizando banco de dados "user"
+            user.username = username
+            user.email = email
+            user.set_password(password)
+            user.first_name = first_name
+            user.last_name = last_name
+
+            # Atualizando banco de dados "user_info"
+            user_info.cpf = cpf_maker.mask(only_digits(cpf))
+            user_info.birthday = birthday
+            user_info.phone_number = phone_number
+            user_info.gender = gender
+
+            # Salvando as alterações
+            user.save()
+            user_info.save()
+
+            return render(request, "dados_atualizados.html", {"user_first_name": first_name})
+        else:
+            return render(request, "minha_conta.html", {"form": form})
 
 
 @login_required
