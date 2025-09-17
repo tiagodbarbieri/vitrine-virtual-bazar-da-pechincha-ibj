@@ -39,9 +39,21 @@
           <div class="card-body">
             <h5 class="card-title">{{item.name}}</h5>
             <p class="card-text">{{item.description}}</p>
+            <p>Itens restantes: {{total_items}}</p>
             <p class="h4 mb-2">R$ {{item.price}}</p>
             <!-- Botão -->
-            <a href="/contato" class="btn btn-primary">Entrar em contato</a>
+             <div class="row mt-4">
+              <div class="col">
+                <a href="/contato" class="btn btn-primary w-100">Entrar em contato</a>
+              </div>
+              <div class="col">
+                {% if user.is_authenticated %}
+                  <button class="btn btn-primary w-100">Reservar</button>
+                {% else %}
+                  <button class="btn btn-primary w-100" disabled="True">Reservar</button>
+                {% endif %}
+              </div>
+             </div>
           </div>
         </div>
       </div>
