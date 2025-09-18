@@ -1,20 +1,12 @@
 // Impede que o clique feche o dropdown
 {
-document.getElementById("submit-btn").addEventListener("click", function(e){
-    e.stopPropagation();
-});
+    document.getElementById("submit-btn").addEventListener("click", function(e){
+        e.stopPropagation();
+    });
 }
 
-// Função para confirmação de exclusão de conta
-function delete_account(){
-    if (confirm("Deseja realmente excluir sua conta?") == true) {
-        // Chamar a função de exclusão de conta
-        window.location.href = '/users/excluir-conta/';
-    }
-}
-
-// Função para verificar o usuário e senha e realizar o login
-function user_login(){
+// Evento para verificar o usuário e senha e realizar o login
+{
     // Função que envia os dados do formulário e aguarda a resposta do servidor
     // Caso o usuário tiver digitado corretamente o usuário e senha é feito o login e reencaminhado para a "/"
     // Caso o usuário tiver digitado incorretamente o usuário e senha é apresentado uma mensagem de erro
@@ -44,6 +36,14 @@ function user_login(){
     });
 }
 
+// Função para confirmação de exclusão de conta
+function delete_account(){
+    if (confirm("Deseja realmente excluir sua conta?") == true) {
+        // Chamar a função de exclusão de conta
+        window.location.href = '/users/excluir-conta/';
+    }
+}
+
 // Função que solicita a reserva do item ao servidor
 function reserve_item(item_id, total_items){
     console.log(`Botão clicado! ID=${item_id}, QTS=${total_items}`);
@@ -51,5 +51,5 @@ function reserve_item(item_id, total_items){
 
 // Função que mostra um popover informando que é necessário fazer login
 function show_popover(){
-    console.log("O mouse entro no botão!");
+    console.log("O mouse entrou no botão!");
 }
