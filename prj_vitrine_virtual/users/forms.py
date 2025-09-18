@@ -103,7 +103,7 @@ class Register(forms.Form):
 
     # Verificar se o CPF está correto
     def clean_cpf(self):
-        cpf = only_digits(self.cleaned_data.get("cpf"))
+        cpf = only_digits(str(self.cleaned_data.get("cpf")))
         validator = CPF()
         if UserInfo.objects.filter(cpf=validator.mask(cpf)):
             raise forms.ValidationError("Esse CPF já está cadastrado!")
