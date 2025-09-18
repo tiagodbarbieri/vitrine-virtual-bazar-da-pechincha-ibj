@@ -3,7 +3,7 @@
 document.getElementById("submit-btn").addEventListener("click", function(e){
     e.stopPropagation();
 });
-};
+}
 
 // Função para confirmação de exclusão de conta
 function delete_account(){
@@ -42,4 +42,14 @@ function user_login(){
                 login_message.style.color = "red";
             }
     });
+}
+
+// Função que solicita a reserva do item ao servidor
+function reserve_item(item_id, total_items){
+    console.log(`Botão clicado! ID=${item_id}, QTS=${total_items}`);
+}
+
+// Função que mostra um popover informando que é necessário fazer login
+function show_popover(){
+    console.log("O mouse entro no botão!");
 }

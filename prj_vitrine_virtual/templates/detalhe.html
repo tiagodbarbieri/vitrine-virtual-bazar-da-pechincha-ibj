@@ -41,19 +41,29 @@
             <p class="card-text">{{item.description}}</p>
             <p>Itens restantes: {{total_items}}</p>
             <p class="h4 mb-2">R$ {{item.price}}</p>
-            <!-- Botão -->
-             <div class="row mt-4">
-              <div class="col">
-                <a href="/contato" class="btn btn-primary w-100">Entrar em contato</a>
+              <!-- Botões -->             
+              <div class="col mt-4">
+                <div class="row">
+                  <div class="col-5">
+                    <a href="/contato" class="btn btn-primary w-100">Entrar em contato</a>
+                  </div>
+                  {% if user.is_authenticated and total_items > 0 %}
+                  <div class="col-5">
+                    <button class="btn btn-primary w-100" onclick="reserve_item('{{item.id}}', '{{total_items}}')">Reservar</button>
+                  </div>
+                  <div class="col-2">
+                    <input type="number" class="form-control" id="items_quantity" min="1" max="{{total_items}}" step="1" value="1">
+                  </div>
+                  {% else %}
+                  <div class="col-5">
+                      <button class="btn btn-primary w-100" disabled="True" onmouseenter="show_popover()">Reservar</button>
+                  </div>
+                  <div class="col-2">
+                    <input type="number" class="form-control" id="items_quantity" value="" disabled="True">
+                  </div>
+                  {% endif %}
+                </div>
               </div>
-              <div class="col">
-                {% if user.is_authenticated %}
-                  <button class="btn btn-primary w-100">Reservar</button>
-                {% else %}
-                  <button class="btn btn-primary w-100" disabled="True">Reservar</button>
-                {% endif %}
-              </div>
-             </div>
           </div>
         </div>
       </div>

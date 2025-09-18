@@ -122,6 +122,11 @@ def minhas_reservas(request):
     return render(request, "minhas_reservas.html")
 
 
+@login_required
+def reservar_item(request):
+    return JsonResponse({"success": True})
+
+
 def login(request):
     if request.method == "POST":
         username = request.POST.get("username")
