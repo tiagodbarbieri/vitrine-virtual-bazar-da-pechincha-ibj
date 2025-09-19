@@ -75,7 +75,13 @@ function reserve_item(item_id, total_items){
             };
             return response.json(); // Converte a resposta pa JS
         }).then(data => {
-            console.log("Resposta do Django:", data);
+            if (data.success){
+                window.alert("Sua reserva foi concluída!");
+                window.location.href = "/users/minhas-reservas/";
+            } else {
+                window.alert("Algo inesperado aconteceu, tente novamente mais tarde...");
+            }
+            
         }).catch(error => {
             console.error("Erro:", error);
         })
@@ -87,7 +93,7 @@ function show_popover(){
     console.log("O mouse entrou no botão!");
 }
 
-// Função que o token do Django
+// Função que gera o token do Django
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
