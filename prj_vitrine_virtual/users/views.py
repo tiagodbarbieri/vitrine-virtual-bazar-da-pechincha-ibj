@@ -5,10 +5,12 @@ from django.contrib.auth import login as django_login
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from users.models import UserInfo
+from main.models import Item
+from users.models import UserInfo, ReservedItems
 from users.forms import Register, Update
-from users.utils import only_digits
+from users.utils import only_digits, quantity_items_available
 from validate_docbr import CPF
+from json import loads
 
 
 def cadastro(request):
@@ -124,7 +126,32 @@ def minhas_reservas(request):
 
 @login_required
 def reservar_item(request):
-    return JsonResponse({"success": True})
+    if request.method == "POST":
+        data = loads(request.body)
+        item_id = data.get("item_id")  # id do item selecionado para reservar
+        item_qty = data.get("item_qty")  # quantidade de intens a reservar
+
+        item = Item.objects.get(id=item_id)
+        user = User.objects.get(id=request.user.id)
+
+        # Verificar a quantidade de itens disponíveis
+        items_available = quantity_items_available(item)
+
+        if item_qty <= items_available:
+            try:
+                # Verificar se o item já está cadastrado para o usuário na tabela "ReservedItems"
+                ReservedItems.objects.get(user_id=user, item_id=item)
+                # Caso sim, atualizar a quantidade na tabela "ReservedItems"
+                
+            except Exception:
+
+            
+            # caso não, fazer o cadastro na tabela "ReservedItems"
+            return JsonResponse({"success": True})
+        else:
+            return JsonResponse({"success": False})
+
+    return redirect("/")
 
 
 def login(request):
