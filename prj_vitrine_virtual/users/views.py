@@ -122,7 +122,19 @@ def minha_conta(request):
 
 @login_required
 def minhas_reservas(request):
-    return render(request, "minhas_reservas.html")
+    # Obter informações do banco de dados do usuário
+    user = User.objects.get(id=request.user.id)
+    reserved_items = ReservedItems.objects.filter(user_id=user).order_by("-reservation_date")
+
+    # Criar lista com as respectivas imagens de cada item (apenas uma imagem)
+    images_urls = []
+    for reserve in reserved_items:
+        item = Item.objects.get(id=reserve.item_id.id)
+        image_url = item.first_image().file.url if item.first_image() else ""
+        images_urls.append(image_url)
+
+    # Imagem do item, nome do item, data de reserva, data de retirada e quantidade reservada
+    return render(request, "minhas_reservas.html", {"reserved_items": reserved_items, "images_urls": images_urls})
 
 
 @login_required
