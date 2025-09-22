@@ -7,7 +7,33 @@
         <div class="col-md-8 mb-3">
             <h2>MINHAS RESERVAS</h2>
             <hr />
-            <p>Listar todas as reservas com data de inicio e fim da reserva aqui!</p>
+            {% for item, image_url, reserve in objects %}
+                <div class="row">
+                    <div class="col-md-2">
+                        {% if image_url != "" %}
+                            <img src="{{ image_url }}" alt="imagem_{{forloop.counter}}" class="img-square">
+                        {% else %}
+                            <!-- Imagem vinda do site www.vecteezy.com -->
+                            <img src="{% static 'img/imagem_nao_diponivel.jpg' %}" alt="imagem_não_disponível" class="img-square">
+                        {% endif %}
+                    </div>
+                    <div lass="col-md-2">
+                        <p>{{ item.name }}</p>
+                    </div>
+                    <div lass="col-md-2">
+                        <p>{{ reserve.reservation_date }}</p>
+                    </div>
+                    <div lass="col-md-2">
+                        <p>{{ reserve.pickup_date }}</p>
+                    </div>
+                    <div lass="col-md-2">
+                        <p>{{ reserve.items_quantity }}</p>
+                    </div>
+                    <div lass="col-md-2">
+                        <button>EXCLUIR</button>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
     </div>
 </div>

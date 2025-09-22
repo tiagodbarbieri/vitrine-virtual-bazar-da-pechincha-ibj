@@ -128,13 +128,15 @@ def minhas_reservas(request):
 
     # Criar lista com as respectivas imagens de cada item (apenas uma imagem)
     images_urls = []
+    items = []
     for reserve in reserved_items:
         item = Item.objects.get(id=reserve.item.id)
         image_url = item.first_image().file.url if item.first_image() else ""
+        items.append(item)
         images_urls.append(image_url)
 
     # Imagem do item, nome do item, data de reserva, data de retirada e quantidade reservada
-    return render(request, "minhas_reservas.html", {"reserved_items": reserved_items, "images_urls": images_urls})
+    return render(request, "minhas_reservas.html", {"objects": zip(items, images_urls, reserved_items)})
 
 
 @login_required
