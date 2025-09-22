@@ -88,11 +88,6 @@ function reserve_item(item_id, total_items){
     };
 }
 
-// Função que mostra um popover informando que é necessário fazer login
-function show_popover(){
-    console.log("O mouse entrou no botão!");
-}
-
 // Função que gera o token do Django
 function getCookie(name) {
     let cookieValue = null;

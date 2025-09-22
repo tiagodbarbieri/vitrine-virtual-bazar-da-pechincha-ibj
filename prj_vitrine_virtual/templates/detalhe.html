@@ -60,7 +60,9 @@
                   </div>
                   {% else %}
                   <div class="col-5">
-                      <button class="btn btn-primary w-100" disabled="True" onmouseenter="show_popover()">Reservar</button>
+                    <span class="d-inline-block w-100" data-toggle="tooltip" title="Para reservar você deve fazer o login!">
+                      <button class="btn btn-primary w-100" style="pointer-events: none;" type="button" disabled="true">Reservar</button>
+                    </span>
                   </div>
                   {% endif %}
                 </div>
