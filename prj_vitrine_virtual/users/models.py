@@ -18,11 +18,11 @@ class UserInfo(models.Model):
 
 # Tabela dos itens reservados
 class ReservedItems(models.Model):
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    item_id = models.ForeignKey(Item, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
     items_quantity = models.PositiveBigIntegerField()
     reservation_date = models.DateField()
     pickup_date = models.DateField()
 
     class Meta:
-        unique_together = ("user_id", "item_id")  # garante que a combinação seja única
+        unique_together = ("user", "item")  # garante que a combinação seja única

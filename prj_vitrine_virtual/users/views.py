@@ -129,7 +129,7 @@ def minhas_reservas(request):
     # Criar lista com as respectivas imagens de cada item (apenas uma imagem)
     images_urls = []
     for reserve in reserved_items:
-        item = Item.objects.get(id=reserve.item_id.id)
+        item = Item.objects.get(id=reserve.item.id)
         image_url = item.first_image().file.url if item.first_image() else ""
         images_urls.append(image_url)
 
@@ -164,8 +164,8 @@ def reservar_item(request):
                 # caso não, fazer o cadastro na tabela "ReservedItems"
                 if type(e).__name__ == "DoesNotExist":
                     ReservedItems.objects.create(
-                        user_id=user,
-                        item_id=item,
+                        user=user,
+                        item=item,
                         items_quantity=item_qty,
                         reservation_date=date.today(),
                         pickup_date=date.today() + timedelta(30),
