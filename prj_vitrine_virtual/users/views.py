@@ -11,6 +11,7 @@ from users.forms import Register, Update
 from users.utils import only_digits, quantity_items_available
 from validate_docbr import CPF
 from json import loads
+from datetime import date, timedelta
 
 
 def cadastro(request):
@@ -140,14 +141,26 @@ def reservar_item(request):
         if item_qty <= items_available:
             try:
                 # Verificar se o item já está cadastrado para o usuário na tabela "ReservedItems"
-                ReservedItems.objects.get(user_id=user, item_id=item)
-                # Caso sim, atualizar a quantidade na tabela "ReservedItems"
-                
-            except Exception:
+                reserved_item = ReservedItems.objects.get(user_id=user, item_id=item)
 
-            
-            # caso não, fazer o cadastro na tabela "ReservedItems"
-            return JsonResponse({"success": True})
+                # Caso sim, atualizar a quantidade na tabela "ReservedItems"
+                item_qty += reserved_item.items_quantity
+                reserved_item.items_quantity = item_qty
+                reserved_item.save()
+
+            except Exception as e:
+                # caso não, fazer o cadastro na tabela "ReservedItems"
+                if type(e).__name__ == "DoesNotExist":
+                    ReservedItems.objects.create(
+                        user_id=user,
+                        item_id=item,
+                        items_quantity=item_qty,
+                        reservation_date=date.today(),
+                        pickup_date=date.today() + timedelta(30),
+                    )
+
+            finally:
+                return JsonResponse({"success": True})
         else:
             return JsonResponse({"success": False})
 
