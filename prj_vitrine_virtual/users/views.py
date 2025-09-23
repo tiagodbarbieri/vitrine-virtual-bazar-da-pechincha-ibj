@@ -181,6 +181,22 @@ def reservar_item(request):
     return redirect("/")
 
 
+@login_required
+def apagar_reserva(request):
+    if request.method == "POST":
+        data = loads(request.body)
+        reserve_id = data.get("reserve_id")  # id da reserva
+
+        try:
+            reserve = ReservedItems.objects.get(id=reserve_id)
+            reserve.delete()
+            return JsonResponse({"success": True})
+        except Exception:
+            return JsonResponse({"success": False})
+
+    return redirect("/")
+
+
 def login(request):
     if request.method == "POST":
         username = request.POST.get("username")

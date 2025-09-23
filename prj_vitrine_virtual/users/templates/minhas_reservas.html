@@ -33,7 +33,7 @@
                         <td class="text-center align-middle">{{ reserve.reservation_date | date:"d/m/Y" }}</td>
                         <td class="text-center align-middle">{{ reserve.pickup_date | date:"d/m/Y" }}</td>
                         <td class="text-center align-middle">{{ reserve.items_quantity }}</td>
-                        <td class="text-center align-middle"><button type="button" class="btn btn-danger" onclick="delete_reservation('{{reserve.id}}')">X</button></td>
+                        <td class="text-center align-middle"><button type="button" class="btn btn-danger" onclick="delete_reservation('{{reserve.id}}', '{{item.name}}')">X</button></td>
                     </tr>
                     {% endfor %}
                 </tbody>

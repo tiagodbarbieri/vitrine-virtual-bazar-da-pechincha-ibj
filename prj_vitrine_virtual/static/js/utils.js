@@ -88,6 +88,39 @@ function reserve_item(item_id, total_items){
     };
 }
 
+// Função que apaga o registro da reserva do usuário
+function delete_reservation(reserve_id, item_name){
+    let option = window.confirm(`Você realmente deseja excluir a reserva do item "${item_name}"?`);
+
+    if (option){
+        const response = fetch("/users/apagar-reserva/", {
+            method: "POST",
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'), // Inserção do token no cabeçalho
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                reserve_id: Number(reserve_id)
+            })
+        }).then(response => {
+            if (!response.ok){
+                throw new Error("Erro na resposta do servidor");
+            };
+            return response.json(); // Converte a resposta pa JS
+        }).then(data => {
+            if (data.success){
+                window.alert("Reserva apagada com sucesso!");
+                window.location.href = "/users/minhas-reservas/";
+            } else {
+                window.alert("Algo inesperado aconteceu, tente novamente mais tarde...");
+            }
+            
+        }).catch(error => {
+            console.error("Erro:", error);
+        })
+    };
+}
+
 // Função que gera o token do Django
 function getCookie(name) {
     let cookieValue = null;
