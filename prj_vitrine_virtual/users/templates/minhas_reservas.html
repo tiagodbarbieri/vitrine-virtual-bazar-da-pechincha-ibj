@@ -4,36 +4,40 @@
 
 <div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-md-8 mb-3">
+        <div class="col-md-12 mb-3">
             <h2>MINHAS RESERVAS</h2>
             <hr />
-            {% for item, image_url, reserve in objects %}
-                <div class="row">
-                    <div class="col-md-2">
-                        {% if image_url != "" %}
-                            <img src="{{ image_url }}" alt="imagem_{{forloop.counter}}" class="img-square">
-                        {% else %}
-                            <!-- Imagem vinda do site www.vecteezy.com -->
-                            <img src="{% static 'img/imagem_nao_diponivel.jpg' %}" alt="imagem_não_disponível" class="img-square">
-                        {% endif %}
-                    </div>
-                    <div lass="col-md-2">
-                        <p>{{ item.name }}</p>
-                    </div>
-                    <div lass="col-md-2">
-                        <p>{{ reserve.reservation_date }}</p>
-                    </div>
-                    <div lass="col-md-2">
-                        <p>{{ reserve.pickup_date }}</p>
-                    </div>
-                    <div lass="col-md-2">
-                        <p>{{ reserve.items_quantity }}</p>
-                    </div>
-                    <div lass="col-md-2">
-                        <button>EXCLUIR</button>
-                    </div>
-                </div>
-            {% endfor %}
+            <table class="table table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th class="text-center align-middle" scope="col">Imagem</th>
+                        <th class="text-center align-middle" scope="col">Nome</th>
+                        <th class="text-center align-middle" scope="col">Data da reserva</th>
+                        <th class="text-center align-middle" scope="col">Data limite para retirada</th>
+                        <th class="text-center align-middle" scope="col">Quantidade</th>
+                        <th class="text-center align-middle" scope="col">Excluir</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item, image_url, reserve in objects %}
+                    <tr>
+                        <td class="text-center align-middle">
+                            {% if image_url != "" %}
+                                <a href="/detalhe/{{ item.slug }}"><img src="{{ image_url }}" alt="imagem_{{forloop.counter}}" class="img-square" style="max-width: 120px;"></a>
+                            {% else %}
+                                <!-- Imagem vinda do site www.vecteezy.com -->
+                                <img src="{% static 'img/imagem_nao_diponivel.jpg' %}" alt="imagem_não_disponível" class="img-square" style="max-width: 120px;">
+                            {% endif %}
+                        </td>
+                        <td class="text-center align-middle"><a href="/detalhe/{{ item.slug }}">{{ item.name }}</a></td>
+                        <td class="text-center align-middle">{{ reserve.reservation_date | date:"d/m/Y" }}</td>
+                        <td class="text-center align-middle">{{ reserve.pickup_date | date:"d/m/Y" }}</td>
+                        <td class="text-center align-middle">{{ reserve.items_quantity }}</td>
+                        <td class="text-center align-middle"><button type="button" class="btn btn-danger" onclick="delete_reservation('{{reserve.id}}')">X</button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
