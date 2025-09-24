@@ -26,3 +26,5 @@ class ReservedItems(models.Model):
 
     class Meta:
         unique_together = ("user", "item")  # garante que a combinação seja única
+        verbose_name = "item reservado"
+        verbose_name_plural = "itens reservados"
