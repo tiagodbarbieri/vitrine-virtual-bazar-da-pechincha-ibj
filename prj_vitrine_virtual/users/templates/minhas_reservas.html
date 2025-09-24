@@ -10,6 +10,7 @@
             <table class="table table-bordered">
                 <thead class="thead-light">
                     <tr>
+                        <th class="text-center align-middle" scope="col">ID</th>
                         <th class="text-center align-middle" scope="col">Imagem</th>
                         <th class="text-center align-middle" scope="col">Nome</th>
                         <th class="text-center align-middle" scope="col">Data da reserva</th>
@@ -21,6 +22,7 @@
                 <tbody>
                     {% for item, image_url, reserve in objects %}
                     <tr>
+                        <td class="text-center align-middle">{{ reserve.id }}</td>
                         <td class="text-center align-middle">
                             {% if image_url != "" %}
                                 <a href="/detalhe/{{ item.slug }}"><img src="{{ image_url }}" alt="imagem_{{forloop.counter}}" class="img-square" style="max-width: 120px;"></a>
