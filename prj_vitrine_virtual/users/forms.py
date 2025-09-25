@@ -6,15 +6,11 @@ from users.models import UserInfo
 from users.utils import only_digits
 from validate_docbr import CPF  # pip install validate-docbr
 from re import sub, match
-from django_recaptcha.fields import ReCaptchaField
+from django_recaptcha.fields import ReCaptchaField  # pip install django-recaptcha
 from django_recaptcha.widgets import ReCaptchaV2Checkbox
 
 
-
-
 class Register(forms.Form):
-    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox)
-    
     username = forms.CharField(
         label="Nome de usuário",
         max_length=150,
@@ -68,6 +64,10 @@ class Register(forms.Form):
     privacy_police = forms.BooleanField(
         label="Aceito a Política de Privacidade.",
         widget=forms.CheckboxInput(attrs={"class": "form-check-input", "tabindex": "11"}),
+    )
+    captcha = ReCaptchaField(
+        widget=ReCaptchaV2Checkbox(attrs={"tabindex": "12"}),
+        error_messages={"required": "Faça a verificação do reCAPTCHA!"},
     )
 
     # ---------------------------------------------------------------------------------------------
