@@ -103,11 +103,11 @@ class Register(forms.Form):
 
     # Verificar se o CPF está correto
     def clean_cpf(self):
-        cpf = self.cleaned_data.get("cpf")
+        cpf = only_digits(str(self.cleaned_data.get("cpf")))
         validator = CPF()
-        if UserInfo.objects.filter(cpf=validator.mask(only_digits(str(cpf)))):
+        if UserInfo.objects.filter(cpf=validator.mask(cpf)):
             raise forms.ValidationError("Esse CPF já está cadastrado!")
-        if not validator.validate(str(cpf)):
+        if not validator.validate(cpf):
             raise forms.ValidationError("O CPF informado é inválido!")
         return cpf
 
@@ -153,8 +153,8 @@ class Update(Register):
         validator = CPF()
         if validator.mask(cpf) == user_logged_cpf:
             return cpf
-        if UserInfo.objects.filter(cpf=validator.mask(only_digits(str(cpf)))):
+        if UserInfo.objects.filter(cpf=validator.mask(cpf)):
             raise forms.ValidationError("Esse CPF já está cadastrado!")
-        if not validator.validate(str(cpf)):
+        if not validator.validate(cpf):
             raise forms.ValidationError("O CPF informado é inválido!")
         return cpf

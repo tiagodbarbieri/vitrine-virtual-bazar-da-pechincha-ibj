@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from main.models import Item
 
 
 GENDER = [("M", "Masculino"), ("F", "Feminino"), ("O", "Outro")]
@@ -13,3 +14,17 @@ class UserInfo(models.Model):
     phone_number = models.CharField(max_length=20)
     privacy_police = models.BooleanField(default=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+
+# Tabela dos itens reservados
+class ReservedItems(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    items_quantity = models.PositiveBigIntegerField()
+    reservation_date = models.DateField()
+    pickup_date = models.DateField()
+
+    class Meta:
+        unique_together = ("user", "item")  # garante que a combinação seja única
+        verbose_name = "item reservado"
+        verbose_name_plural = "itens reservados"

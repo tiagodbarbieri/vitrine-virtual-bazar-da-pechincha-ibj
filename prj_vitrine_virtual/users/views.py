@@ -5,10 +5,13 @@ from django.contrib.auth import login as django_login
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from users.models import UserInfo
+from main.models import Item
+from users.models import UserInfo, ReservedItems
 from users.forms import Register, Update
-from users.utils import only_digits
+from users.utils import only_digits, quantity_items_available, next_second_saturday
 from validate_docbr import CPF
+from json import loads
+from datetime import date
 
 
 def cadastro(request):
@@ -119,7 +122,79 @@ def minha_conta(request):
 
 @login_required
 def minhas_reservas(request):
-    return render(request, "minhas_reservas.html")
+    # Obter informações do banco de dados do usuário
+    user = User.objects.get(id=request.user.id)
+    reserved_items = ReservedItems.objects.filter(user_id=user).order_by("-reservation_date")
+
+    # Criar lista com as respectivas imagens de cada item (apenas uma imagem)
+    images_urls = []
+    items = []
+    for reserve in reserved_items:
+        item = Item.objects.get(id=reserve.item.id)
+        image_url = item.first_image().file.url if item.first_image() else ""
+        items.append(item)
+        images_urls.append(image_url)
+
+    # Imagem do item, nome do item, data de reserva, data de retirada e quantidade reservada
+    return render(request, "minhas_reservas.html", {"objects": zip(items, images_urls, reserved_items)})
+
+
+@login_required
+def reservar_item(request):
+    if request.method == "POST":
+        data = loads(request.body)
+        item_id = data.get("item_id")  # id do item selecionado para reservar
+        item_qty = data.get("item_qty")  # quantidade de intens a reservar
+
+        item = Item.objects.get(id=item_id)
+        user = User.objects.get(id=request.user.id)
+
+        # Verificar a quantidade de itens disponíveis
+        items_available = quantity_items_available(item)
+
+        if item_qty <= items_available:
+            try:
+                # Verificar se o item já está cadastrado para o usuário na tabela "ReservedItems"
+                reserved_item = ReservedItems.objects.get(user_id=user, item_id=item)
+
+                # Caso sim, atualizar a quantidade na tabela "ReservedItems"
+                item_qty += reserved_item.items_quantity
+                reserved_item.items_quantity = item_qty
+                reserved_item.save()
+
+            except Exception as e:
+                # caso não, fazer o cadastro na tabela "ReservedItems"
+                if type(e).__name__ == "DoesNotExist":
+                    ReservedItems.objects.create(
+                        user=user,
+                        item=item,
+                        items_quantity=item_qty,
+                        reservation_date=date.today(),
+                        pickup_date=next_second_saturday(date.today()),
+                    )
+
+            finally:
+                return JsonResponse({"success": True})
+        else:
+            return JsonResponse({"success": False})
+
+    return redirect("/")
+
+
+@login_required
+def apagar_reserva(request):
+    if request.method == "POST":
+        data = loads(request.body)
+        reserve_id = data.get("reserve_id")  # id da reserva
+
+        try:
+            reserve = ReservedItems.objects.get(id=reserve_id)
+            reserve.delete()
+            return JsonResponse({"success": True})
+        except Exception:
+            return JsonResponse({"success": False})
+
+    return redirect("/")
 
 
 def login(request):

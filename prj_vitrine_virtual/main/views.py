@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
-from .forms import Search
-from .models import Item, Image
+from main.forms import Search
+from main.models import Item, Image
+from users.utils import quantity_items_available
 
 
 def get_order(order: int) -> str:
@@ -60,4 +61,8 @@ def home(request):
 def detalhe(request, slug):
     item = get_object_or_404(Item, slug=slug)  # Obtém os itens com o respectivo id
     images = Image.objects.filter(item_id=item)  # Obtém a lista de imagens referentes ao respectivo item
-    return render(request, "detalhe.html", {"item": item, "images": images})
+
+    # Quantidade de itens disponíveis
+    total_items = quantity_items_available(item)
+
+    return render(request, "detalhe.html", {"item": item, "images": images, "total_items": total_items})
