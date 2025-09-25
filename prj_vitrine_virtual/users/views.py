@@ -8,10 +8,10 @@ from django.contrib.auth.decorators import login_required
 from main.models import Item
 from users.models import UserInfo, ReservedItems
 from users.forms import Register, Update
-from users.utils import only_digits, quantity_items_available
+from users.utils import only_digits, quantity_items_available, next_second_saturday
 from validate_docbr import CPF
 from json import loads
-from datetime import date, timedelta
+from datetime import date
 
 
 def cadastro(request):
@@ -170,7 +170,7 @@ def reservar_item(request):
                         item=item,
                         items_quantity=item_qty,
                         reservation_date=date.today(),
-                        pickup_date=date.today() + timedelta(30),
+                        pickup_date=next_second_saturday(date.today()),
                     )
 
             finally:

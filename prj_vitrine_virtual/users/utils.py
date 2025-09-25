@@ -1,6 +1,7 @@
 from django.db.models import Sum
 from main.models import Item
 from users.models import ReservedItems
+from datetime import date, datetime
 
 
 def only_digits(cpf: str) -> str:
@@ -9,10 +10,6 @@ def only_digits(cpf: str) -> str:
         if character.isdigit():
             numbers = numbers + character
     return numbers
-
-
-if __name__ == "__main__":
-    print(only_digits("498.518.215-00"))
 
 
 # Função que calcula a quantidade de itens disponíveis com base no estoque e nos itens reservados
@@ -24,3 +21,25 @@ def quantity_items_available(item: Item) -> int:
     total_items = item.stock - (reserved_items if reserved_items is not None else 0)
 
     return int(total_items)
+
+
+# Função que retorna o próximo segundo sábado referente ao dia atual
+def next_second_saturday(date_now: date) -> date:
+    if date_now < second_saturday(date_now):
+        return second_saturday(date_now)
+    elif date_now >= second_saturday(date_now):
+        if date_now.month < 12:
+            return second_saturday(date(date_now.year, date_now.month + 1, date_now.day))
+        else:
+            return second_saturday(date(date_now.year + 1, 1, date_now.day))
+
+
+# Função que retorna a data do segundo sábado referente ao mesmo mês
+def second_saturday(date_given: date) -> date:
+    month = date_given.month
+    year = date_given.year
+
+    start_week_day = date(year, month, 1).weekday() + 2 if date(year, month, 1).weekday() <= 5 else 1
+    second_saturday = 15 - start_week_day
+
+    return date(year, month, second_saturday)
