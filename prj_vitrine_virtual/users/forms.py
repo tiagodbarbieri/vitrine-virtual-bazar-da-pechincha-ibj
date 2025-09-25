@@ -126,6 +126,8 @@ class Register(forms.Form):
 
 
 class Update(Register):
+    captcha = None
+
     def __init__(self, *args, user_logged, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.user_logged = user_logged
