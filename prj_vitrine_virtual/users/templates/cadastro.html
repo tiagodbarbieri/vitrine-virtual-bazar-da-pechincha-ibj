@@ -11,12 +11,6 @@
     </div>
     <form action="/users/cadastro/" method="post">
         {% csrf_token %}
-        
-        {{ form.captcha }}  <!-- O widget injeta o container do checkbox -->
-        {{ form.captcha.errors}}    
-        
-        <br>
-        
         <div class="row align-items-center">
             <div class="col-md-4 mb-3">
                 <h4>Dados de acesso</h4>
@@ -70,7 +64,7 @@
                 </div>
             </div>
         </div>
-        <div class="row align-items-end">
+        <div class="row align-items-center">
             <div class="col-md-4">
                 <label for="id_password_confirmation">{{ form.password_confirmation.label}}</label>
                 {{ form.password_confirmation}}
@@ -80,7 +74,13 @@
                 {{ form.birthday }}
             </div>
             <div class="col-md-4 mb-3">
-                <button type="submit" class="btn btn-primary w-100" tabindex="11">CADASTRAR</button>
+                {{ form.captcha }}  <!-- O widget injeta o container do checkbox -->
+            </div>
+        </div>
+        <div class="row align-items-center">
+            <div class="col-md-4"></div>
+            <div class="col-md-4 mt-3 mb-3">
+                <button type="submit" class="btn btn-primary w-100" tabindex="13">CADASTRAR</button>
             </div>
         </div>
     </form>
