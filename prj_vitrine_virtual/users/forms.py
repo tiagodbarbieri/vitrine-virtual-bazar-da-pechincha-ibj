@@ -1,15 +1,20 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
-
 from users.models import GENDER
 from users.models import UserInfo
 from users.utils import only_digits
 from validate_docbr import CPF  # pip install validate-docbr
 from re import sub, match
+from django_recaptcha.fields import ReCaptchaField
+from django_recaptcha.widgets import ReCaptchaV2Checkbox
+
+
 
 
 class Register(forms.Form):
+    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox)
+    
     username = forms.CharField(
         label="Nome de usuário",
         max_length=150,

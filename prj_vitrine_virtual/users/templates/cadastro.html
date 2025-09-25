@@ -11,6 +11,12 @@
     </div>
     <form action="/users/cadastro/" method="post">
         {% csrf_token %}
+        
+        {{ form.captcha }}  <!-- O widget injeta o container do checkbox -->
+        {{ form.captcha.errors}}    
+        
+        <br>
+        
         <div class="row align-items-center">
             <div class="col-md-4 mb-3">
                 <h4>Dados de acesso</h4>

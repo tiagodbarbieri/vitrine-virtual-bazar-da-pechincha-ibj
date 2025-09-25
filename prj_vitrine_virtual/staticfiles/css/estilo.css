@@ -1,0 +1,27 @@
+/* estilo.css */
+html, body {
+    height: 100%;
+}
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+.content {
+    flex: 1;
+}
+
+.img-square {
+    width: 100%;
+    aspect-ratio:1/1;
+    object-fit: cover;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 20px;
+}
+
+.img-square-carousel {
+    width: 100%;
+    aspect-ratio:1/1;
+    object-fit: cover;
+}

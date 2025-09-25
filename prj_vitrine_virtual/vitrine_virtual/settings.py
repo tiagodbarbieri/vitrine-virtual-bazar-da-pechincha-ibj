@@ -40,7 +40,18 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "main.apps.MainConfig",
     "users.apps.UsersConfig",
+    "captcha"
 ]
+
+# RECAPTCHA v2 - defina suas chaves reais em produção (ex.: via variáveis de ambiente)
+RECAPTCHA_PUBLIC_KEY = os.getenv('RECAPTCHA_PUBLIC_KEY', '6LfRTtQrAAAAAA5PLzG9pkqsKgTNPRE136Nv_m-d') 
+RECAPTCHA_PRIVATE_KEY = os.getenv('RECAPTCHA_PRIVATE_KEY', '6LfRTtQrAAAAAL1oX6oc4Lycj-Lc3gI_4EHZ8BMJ')
+
+# Opcional: se precisar usar domínio alternativo (ex.: redes restritas)
+# RECAPTCHA_DOMAIN = "www.recaptcha.net"
+
+# Segurança extra (opcional): tempo de timeout para a chamada de verificação no servidor (segundos)
+# RECAPTCHA_TIMEOUT = 10
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -57,7 +68,7 @@ ROOT_URLCONF = "vitrine_virtual.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": ["templates"],
+    "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
