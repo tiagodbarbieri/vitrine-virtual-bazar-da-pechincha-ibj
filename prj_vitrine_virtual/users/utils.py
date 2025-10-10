@@ -1,7 +1,7 @@
 from django.db.models import Sum
 from main.models import Item
 from users.models import ReservedItems
-from datetime import date, datetime
+from datetime import date
 
 
 def only_digits(cpf: str) -> str:
