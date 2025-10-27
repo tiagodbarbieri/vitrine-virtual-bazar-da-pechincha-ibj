@@ -5,3 +5,7 @@ django-all-in-one-accessibility==3.0.1
 django-recaptcha==4.1.0
 pillow==11.1.0
 validate_docbr==1.11.1
+pandas==2.2.1
+SQLAlchemy==2.0.20
+PyMySQL==1.1.0
+python-dotenv==1.0.1
