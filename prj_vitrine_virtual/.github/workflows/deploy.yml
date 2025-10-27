@@ -1,0 +1,71 @@
+name: Deploy and Update MySQL Database
+
+on:
+  push:
+    branches:
+      - deploy
+      - deploy_kpis
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # --- 1. Checkout code ---
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # --- 2. Set up Python ---
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # --- 3. Install dependencies ---
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r ../requirements.txt
+
+      # --- 4. Deploy site (same as before) ---
+      - name: Deploy site via rsync
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          rsync -avz --delete \
+            --exclude '.git*' \
+            ./ $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH
+
+      # --- 5. Update MySQL database from SQLite ---
+      - name: Update MySQL database
+        env:
+          SQLITE_PATH: .db.sqlite3  
+          MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
+          MYSQL_USER: ${{ secrets.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+        run: |
+          python <<'PYCODE'
+          import pandas as pd
+          from sqlalchemy import create_engine
+
+          sqlite_path = "${{ env.SQLITE_PATH }}"
+          sqlite_engine = create_engine(f"sqlite:///{sqlite_path}")
+
+          mysql_engine = create_engine(
+              f"mysql+pymysql://{ '${{ env.MYSQL_USER }}' }:{ '${{ env.MYSQL_PASSWORD }}' }@{ '${{ env.MYSQL_HOST }}' }/{ '${{ env.MYSQL_DATABASE }}' }"
+          )
+
+          with sqlite_engine.connect() as conn_sqlite:
+              for table_name in conn_sqlite.exec_driver_sql("SELECT name FROM sqlite_master WHERE type='table'").fetchall():
+                  tname = table_name[0]
+                  print(f"Transferring table: {tname}")
+                  df = pd.read_sql_table(tname, conn_sqlite)
+                  df.to_sql(tname, mysql_engine, if_exists='replace', index=False)
+          PYCODE
