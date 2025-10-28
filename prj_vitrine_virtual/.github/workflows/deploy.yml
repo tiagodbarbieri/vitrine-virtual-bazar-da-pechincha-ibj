@@ -3,7 +3,6 @@ name: Deploy and Update MySQL Database
 on:
   push:
     branches:
-      - deploy
       - deploy_kpis
 
 jobs:
