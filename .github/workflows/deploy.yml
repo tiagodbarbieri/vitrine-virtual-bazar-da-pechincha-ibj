@@ -36,8 +36,8 @@ jobs:
           SSH_PORT: ${{ secrets.SSH_PORT }}
         run: |
           mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          #echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          #chmod 600 ~/.ssh/id_rsa
           rsync -avz -e 'ssh -p "${{ env.SSH_PORT }}"' --delete \
             --exclude '.git*' \
             ./ $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH
