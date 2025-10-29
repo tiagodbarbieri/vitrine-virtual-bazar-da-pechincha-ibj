@@ -47,7 +47,7 @@ jobs:
               git fetch origin
               git reset --hard origin/deploy-kpis
               echo 'Repository updated successfully.'
-            #fi
+            fi
       
       # --- 5. Update MySQL database from SQLite ---
       - name: Update MySQL database
