@@ -37,7 +37,7 @@ jobs:
           DEPLOY_PATH_FULL: ${{ secrets.DEPLOY_PATH_FULL }}
           SSH_PORT: ${{ secrets.SSH_PORT }}
         run: |
-            # Check if the .git directory exists exists
+            # Check if the .git directory exists
             if [ ! -d "${{ env.DEPLOY_PATH_FULL }}"/.git/ ]; then
               cd $DEPLOY_PATH
               git clone --branch deploy_kpis https://github.com/Projetos-Integradores-Univesp/vitrine-virtual-bazar-da-pechincha-ibj.git
@@ -52,7 +52,7 @@ jobs:
       # --- 5. Update MySQL database from SQLite ---
       - name: Update MySQL database
         env:
-          SQLITE_PATH: .db.sqlite3  
+          SQLITE_PATH: ${{ secrets.DEPLOY_PATH_FULL }}/prj_vitrine_virtual/db.sqlite3
           MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
           MYSQL_USER: ${{ secrets.MYSQL_USER }}
           MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
