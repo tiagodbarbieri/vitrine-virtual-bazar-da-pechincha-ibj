@@ -36,13 +36,17 @@ jobs:
           DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
           SSH_PORT: ${{ secrets.SSH_PORT }}
         run: |
-            cd $DEPLOY_PATH && \
-            #git clone --branch deploy_kpis https://github.com/Projetos-Integradores-Univesp/vitrine-virtual-bazar-da-pechincha-ibj.git
-            git fetch origin && \
-            git reset --hard origin/deploy-kpis && \
-            echo 'Repository updated successfully.'
-        
-
+            # Check if the .git directory exists exists
+            if [ ! -d "${{ env.DEPLOY_PATH }}"/.git/ ]; then
+              git clone --branch deploy_kpis https://github.com/Projetos-Integradores-Univesp/vitrine-virtual-bazar-da-pechincha-ibj.git
+              echo 'Repository cloned successfully.'
+            else
+              cd $DEPLOY_PATH
+              git fetch origin
+              git reset --hard origin/deploy-kpis
+              echo 'Repository updated successfully.'
+            fi
+      
       # --- 5. Update MySQL database from SQLite ---
       - name: Update MySQL database
         env:
