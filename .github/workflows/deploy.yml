@@ -43,7 +43,7 @@ jobs:
               git clone --branch deploy_kpis https://github.com/Projetos-Integradores-Univesp/vitrine-virtual-bazar-da-pechincha-ibj.git
               echo 'Repository cloned successfully.'
             else
-              cd $DEPLOY_PATH
+              cd $DEPLOY_PATH_FULL
               git fetch origin
               git reset --hard origin/deploy-kpis
               echo 'Repository updated successfully.'
