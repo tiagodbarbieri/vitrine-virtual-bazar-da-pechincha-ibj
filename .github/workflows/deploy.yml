@@ -30,19 +30,16 @@ jobs:
       - name: Deploy site via git pull
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVKEY_FILE}}
           DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
           DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
           DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
           SSH_PORT: ${{ secrets.SSH_PORT }}
         run: |
-            export temp_file=$(mktemp) && \
-            echo "${{ env.SSH_PRIVATE_KEY }}" > $temp_file && \ 
-            ssh -i $temp_file -p "${{ env.SSH_PORT }}" $DEPLOY_USER@$DEPLOY_HOST && \
+            ssh -i "${{ env.SSH_PRIVKEY_FILE }}" -p "${{ env.SSH_PORT }}" $DEPLOY_USER@$DEPLOY_HOST && \
             cd $DEPLOY_PATH && \
             git fetch origin && \
             git reset --hard origin/deploy && \
-            rm -f $temp_file && \
-            unset $temp_file && \
             echo 'Repository updated successfully.'
         
 
