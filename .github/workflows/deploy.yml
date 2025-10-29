@@ -35,13 +35,15 @@ jobs:
           DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
           SSH_PORT: ${{ secrets.SSH_PORT }}
         run: |
-          
-          echo "${{ env.SSH_PRIVATE_KEY }}" | ssh -i - -p "${{ env.SSH_PORT }}" $DEPLOY_USER@$DEPLOY_HOST
+            temp_file = $(mktemp) && \
+            echo "${{ env.SSH_PRIVATE_KEY }}" > $temp_file && \ 
+            ssh -i $temp_file -p "${{ env.SSH_PORT }}" $DEPLOY_USER@$DEPLOY_HOST && \
             cd $DEPLOY_PATH && \
             git fetch origin && \
             git reset --hard origin/deploy && \
+            rm -f $temp_file && \
             echo 'Repository updated successfully.'
-          "
+        
 
       # --- 5. Update MySQL database from SQLite ---
       - name: Update MySQL database
