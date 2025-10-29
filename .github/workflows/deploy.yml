@@ -36,7 +36,7 @@ jobs:
           SSH_PORT: ${{ secrets.SSH_PORT }}
         run: |
           
-          cat "${{ env.SSH_PRIVATE_KEY }}" | ssh -i - -p "${{ env.SSH_PORT }}" $DEPLOY_USER@$DEPLOY_HOST "
+          echo "${{ env.SSH_PRIVATE_KEY }}" | ssh -i - -p "${{ env.SSH_PORT }}" $DEPLOY_USER@$DEPLOY_HOST
             cd $DEPLOY_PATH && \
             git fetch origin && \
             git reset --hard origin/deploy && \
