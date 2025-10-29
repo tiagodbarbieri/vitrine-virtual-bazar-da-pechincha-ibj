@@ -44,8 +44,7 @@ jobs:
               echo 'Repository cloned successfully.'
             else
               cd $DEPLOY_PATH_FULL
-              git fetch origin
-              git reset --hard origin/deploy-kpis
+              git pull --rebase origin deploy_kpis
               echo 'Repository updated successfully.'
             fi
       
