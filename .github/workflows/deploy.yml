@@ -35,12 +35,12 @@ jobs:
           DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
           SSH_PORT: ${{ secrets.SSH_PORT }}
         run: |
-          mkdir -p ~/.ssh
-          #echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-          #chmod 600 ~/.ssh/id_rsa
-          rsync -avz -e 'ssh -p "${{ env.SSH_PORT }}"' --delete \
-            --exclude '.git*' \
-            ./ $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH
+          ssh $DEPLOY_USER@$DEPLOY_HOST "
+            cd $DEPLOY_PATH && \
+            git fetch origin && \
+            git reset --hard origin/deploy && \
+            echo 'Repository updated successfully.'
+          "
 
       # --- 5. Update MySQL database from SQLite ---
       - name: Update MySQL database
