@@ -21,12 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-769ca)bfjg5=id6i@vv2la)#)^jk8klvon)^knq69s*3!06oxk"
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["vitrinevirtual.gtpc.com.br", "69.48.179.179", "localhost", "127.0.0.1"]
 
 
 # Application definition
@@ -45,8 +45,8 @@ INSTALLED_APPS = [
 ]
 
 # RECAPTCHA v2 - defina suas chaves reais em produção (ex.: via variáveis de ambiente)
-RECAPTCHA_PUBLIC_KEY = os.getenv("RECAPTCHA_PUBLIC_KEY", "6LfRTtQrAAAAAA5PLzG9pkqsKgTNPRE136Nv_m-d")
-RECAPTCHA_PRIVATE_KEY = os.getenv("RECAPTCHA_PRIVATE_KEY", "6LfRTtQrAAAAAL1oX6oc4Lycj-Lc3gI_4EHZ8BMJ")
+RECAPTCHA_PUBLIC_KEY = os.getenv("RECAPTCHA_PUBLIC_KEY")
+RECAPTCHA_PRIVATE_KEY = os.getenv("RECAPTCHA_PRIVATE_KEY")
 
 # Opcional: se precisar usar domínio alternativo (ex.: redes restritas)
 # RECAPTCHA_DOMAIN = "www.recaptcha.net"
@@ -92,9 +92,16 @@ WSGI_APPLICATION = "vitrine_virtual.wsgi.application"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.environ.get("MYSQL_DATABASE"),       # The name of your MySQL database
+        'USER': os.environ.get("MYSQL_USER"),           # Your MySQL username
+        'PASSWORD': os.environ.get("MYSQL_PASSWORD"),   # Your MySQL password
+        'HOST': os.environ.get("MYSQL_HOST"),           # Or the IP address/hostname of your MySQL server
+        'PORT': '3306',                                 # Default MySQL port
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+        }
     }
 }
 

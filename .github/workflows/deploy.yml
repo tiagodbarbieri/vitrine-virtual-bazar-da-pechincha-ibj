@@ -20,13 +20,16 @@ jobs:
         with:
           python-version: '3.11'
 
-      # --- 3. Install dependencies ---
-      - name: Install dependencies
+      # --- 3. Install virtual environment and dependencies ---
+      - name: Install virtual environment anddependencies
         run: |
+          cd $DEPLOY_PATH
+          python -m venv .venv
+          source .venv/bin/activate
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # --- 4. Deploy site (same as before) ---
+      # --- 4. Deploy site via git pull ---
       - name: Deploy site via git pull
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
