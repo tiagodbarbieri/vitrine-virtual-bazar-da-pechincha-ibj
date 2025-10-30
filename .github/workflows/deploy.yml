@@ -70,6 +70,8 @@ jobs:
 
           with sqlite_engine.connect() as conn_sqlite:
               for table_name in conn_sqlite.exec_driver_sql("SELECT name FROM sqlite_master WHERE type='table'").fetchall():
+                  if table_name[0] == 'sqlite_sequence':
+                      continue  # Skip SQLite internal table
                   tname = table_name[0]
                   print(f"Transferring table: {tname}")
                   df = pd.read_sql_table(tname, conn_sqlite)
