@@ -57,7 +57,7 @@ jobs:
       # --- 5. Update environment variables on host ---
       - name: Update environment variables on host
         env:
-          RECAPTCHA_SECRET_KEY: ${{ secrets.RECAPTCHA_SECRET_KEY }}
+          RECAPTCHA_PRIVATE_KEY: ${{ secrets.RECAPTCHA_PRIVATE_KEY }}
           RECAPTCHA_PUBLIC_KEY: ${{ secrets.RECAPTCHA_PUBLIC_KEY }}
           DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
           MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
@@ -65,7 +65,7 @@ jobs:
           MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
           MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }} 
         run: |
-          ~/setenv.sh RECAPTCHA_SECRET_KEY "${{ env.RECAPTCHA_SECRET_KEY }}"
+          ~/setenv.sh RECAPTCHA_PRIVATE_KEY "${{ env.RECAPTCHA_PRIVATE_KEY }}"
           ~/setenv.sh RECAPTCHA_PUBLIC_KEY "${{ env.RECAPTCHA_PUBLIC_KEY }}"      
           ~/setenv.sh DJANGO_SECRET_KEY "${{ env.DJANGO_SECRET_KEY }}"
           ~/setenv.sh MYSQL_HOST "${{ env.MYSQL_HOST }}"
