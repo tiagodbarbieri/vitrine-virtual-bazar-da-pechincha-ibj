@@ -102,8 +102,7 @@ jobs:
           ~/setenv.sh MYSQL_PASSWORD "${{ env.MYSQL_PASSWORD }}"
           ~/setenv.sh MYSQL_DATABASE "${{ env.MYSQL_DATABASE }}"
           source ~/.bashrc
-      # --- 7. Restart Gunicorn service ---
-      - name: Restart Gunicorn service
+
         
 
 
