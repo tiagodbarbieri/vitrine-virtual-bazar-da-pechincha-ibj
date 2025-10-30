@@ -22,12 +22,15 @@ jobs:
 
       # --- 3. Install virtual environment and dependencies ---
       - name: Install virtual environment anddependencies
+        env:
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+          DEPLOY_PATH_FULL: ${{ secrets.DEPLOY_PATH_FULL }}
         run: |
           cd $DEPLOY_PATH
           python -m venv .venv
           source .venv/bin/activate
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r $DEPLOY_PATH_FULL/requirements.txt
 
       # --- 4. Deploy site via git pull ---
       - name: Deploy site via git pull
