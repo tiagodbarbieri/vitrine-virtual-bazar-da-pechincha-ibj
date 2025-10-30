@@ -1,0 +1,7 @@
+# Para instalar: pip install -r requirements.txt
+
+Django==5.1.7
+django-all-in-one-accessibility==3.0.1
+django-recaptcha==4.1.0
+pillow==11.1.0
+validate_docbr==1.11.1

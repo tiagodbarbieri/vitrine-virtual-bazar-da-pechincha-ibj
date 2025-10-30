@@ -1,73 +1,58 @@
-# from django.test import TestCase
-import sqlite3
-
-DB_PATH = "prj_vitrine_virtual/db.sqlite3"
-
-
-class DB_manipulation:
-    def __init__(self):
-        pass
-
-    def exibir_tabelas_db(self):
-        connection = sqlite3.connect(DB_PATH)
-        cursor = connection.cursor()
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
-        tabelas = cursor.fetchall()
-        print("Lista de tabelas presentes no banco de dados:")
-        for tabela in tabelas:
-            print(f"    {tabela[0]}")
-        print("\n")
-        connection.close()
-
-    def exibir_nomes_colunas(self, nome_tabela: str):
-        connection = sqlite3.connect(DB_PATH)
-        cursor = connection.cursor()
-        cursor.execute(f"PRAGMA table_info({nome_tabela.lower()});")
-        colunas = cursor.fetchall()
-        print(f"Lista de colunas presentes na tabela {nome_tabela.capitalize()}")
-        for coluna in colunas:
-            print(f"    {coluna[1]}")
-        connection.close()
-
-    def exibir_dados_tabela(self, nome_tabela: str):
-        connection = sqlite3.connect(DB_PATH)
-        cursor = connection.cursor()
-        cursor.execute(f"SELECT * FROM {nome_tabela.lower()};")
-        dados = cursor.fetchall()
-        print(f"\nDados da tabela {nome_tabela.capitalize()}:")
-        for linha in dados:
-            print(f"    {linha}")
-        connection.close()
-
-    def apagar_linha_tabela(self, nome_tabela: str, id: int):
-        connection = sqlite3.connect(DB_PATH)
-        cursor = connection.cursor()
-        cursor.execute(f"DELETE FROM {nome_tabela.lower()} WHERE id = ?", (id,))
-        connection.commit()
-        connection.close()
-
-    def inserir_categoria(self, name: str):
-        pass
-
-    def inserir_item(self):
-        pass
-
-    def inserir_imagem(self):
-        pass
+from django.test import TestCase
+from django.urls import reverse
+from datetime import datetime
+from main.models import Category, Item
 
 
-if __name__ == "__main__":
-    manipulador = DB_manipulation()
-    # manipulador.exibir_tabelas_db()
+class TestarPaginasGerais(TestCase):
+    def testar_se_home_carrega_completamente(self):
+        response = self.client.get("/")
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "home.html")
+        self.assertContains(response, "BAZAR MISSIONÁRIO IBJ")
 
-    # manipulador.exibir_nomes_colunas("main_category")
-    # manipulador.exibir_dados_tabela("main_category")
+    def testar_se_home_page_carrega_completamente(self):
+        response = self.client.get(reverse("home"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "home.html")
+        self.assertContains(response, "BAZAR MISSIONÁRIO IBJ")
 
-    # manipulador.exibir_nomes_colunas("main_item")
-    # manipulador.exibir_dados_tabela("main_item")
+    def testar_se_quem_somos_carrega_completamente(self):
+        response = self.client.get(reverse("quem-somos"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "quem_somos.html")
+        self.assertContains(response, "QUEM SOMOS")
 
-    # manipulador.exibir_nomes_colunas("main_image")
-    manipulador.exibir_dados_tabela("main_image")
+    def testar_se_contado_carrega_completamente(self):
+        response = self.client.get(reverse("contato"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "contato.html")
+        self.assertContains(response, "CONTATE-NOS")
 
-    # manipulador.exibir_nomes_colunas("auth_user")
-    # manipulador.exibir_dados_tabela("auth_user")
+
+class TestarPaginaDetalhe(TestCase):
+    def setUp(self):
+        self.category = Category.objects.create(
+            id=1,
+            name="brinquedos",
+            slug="brinquedos",
+            creation_date=datetime.now(),
+            update_date=datetime.now(),
+        )
+        self.item = Item.objects.create(
+            id=1,
+            name="Carrinho de corrida",
+            slug="carrinho-de-corrida",
+            description="",
+            price=15,
+            stock=2,
+            creation_date=datetime.now(),
+            update_date=datetime.now(),
+            category=self.category,
+        )
+
+    def testar_se_detalhe_carrega_completamente(self):
+        response = self.client.get(reverse("detalhe", kwargs={"slug": "carrinho-de-corrida"}))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "detalhe.html")
+        self.assertContains(response, "Carrinho de corrida")

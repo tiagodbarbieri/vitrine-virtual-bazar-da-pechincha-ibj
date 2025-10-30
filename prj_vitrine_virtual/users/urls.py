@@ -11,7 +11,7 @@ from users.views import excluir_conta
 
 
 urlpatterns = [
-    path("cadastro/", cadastro, name="home-page"),
+    path("cadastro/", cadastro, name="cadastro"),
     path("redefinir-senha/", redefinir_senha, name="redefinir-senha"),
     path("minha-conta/", minha_conta, name="minha-conta"),
     path("minhas-reservas/", minhas_reservas, name="minhas-reservas"),

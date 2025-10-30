@@ -4,6 +4,6 @@ from main.views import detalhe
 
 
 urlpatterns = [
-    path("", home, name="home-page"),
+    path("", home, name="home"),
     path("detalhe/<str:slug>", detalhe, name="detalhe"),
 ]

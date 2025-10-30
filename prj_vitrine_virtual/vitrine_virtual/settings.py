@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "main.apps.MainConfig",
     "users.apps.UsersConfig",
     "django_recaptcha",
+    "accessibility",
 ]
 
 # RECAPTCHA v2 - defina suas chaves reais em produção (ex.: via variáveis de ambiente)
@@ -76,6 +77,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "accessibility.context_processors.admin_AIOA",
             ],
         },
     },
