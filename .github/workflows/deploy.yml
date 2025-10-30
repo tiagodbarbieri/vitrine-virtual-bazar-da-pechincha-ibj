@@ -20,19 +20,7 @@ jobs:
         with:
           python-version: '3.11'
 
-      # --- 3. Install virtual environment and dependencies ---
-      - name: Install virtual environment anddependencies
-        env:
-          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
-          DEPLOY_PATH_FULL: ${{ secrets.DEPLOY_PATH_FULL }}
-        run: |
-          cd $DEPLOY_PATH
-          python -m venv .venv
-          source .venv/bin/activate
-          python -m pip install --upgrade pip
-          pip install -r $DEPLOY_PATH_FULL/requirements.txt
-
-      # --- 4. Deploy site via git pull ---
+      # --- 3. Deploy site via git pull ---
       - name: Deploy site via git pull
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -54,6 +42,18 @@ jobs:
               echo 'Repository updated successfully.'
             fi
       
+      # --- 4. Install virtual environment and dependencies ---
+      - name: Install virtual environment and dependencies
+        env:
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+          DEPLOY_PATH_FULL: ${{ secrets.DEPLOY_PATH_FULL }}
+        run: |
+          cd $DEPLOY_PATH
+          python -m venv .venv
+          source .venv/bin/activate
+          python -m pip install --upgrade pip
+          pip install -r $DEPLOY_PATH_FULL/requirements.txt
+
       # --- 5. Update MySQL database from SQLite ---
       - name: Update MySQL database
         env:

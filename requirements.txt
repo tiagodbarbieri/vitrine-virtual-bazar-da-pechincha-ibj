@@ -9,5 +9,6 @@ pandas==2.2.1
 SQLAlchemy==2.0.20
 PyMySQL==1.1.0
 python-dotenv==1.0.1
-mysqlclient==2.2.7
+mysqlclient==2.1.1
+gunicorn=23.0.0
 
