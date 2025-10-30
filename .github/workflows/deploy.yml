@@ -83,3 +83,27 @@ jobs:
                   df = pd.read_sql_table(tname, conn_sqlite)
                   df.to_sql(tname, mysql_engine, if_exists='replace', index=False)
           PYCODE
+        # --- 6. Update environment variables on host ---
+      - name: Update environment variables on host
+        env:
+          RECAPTCHA_SECRET_KEY: ${{ secrets.reCAPTCHA_SECRET_KEY }}
+          RECAPTCHA_PUBLIC_KEY: ${{ secrets.reCAPTCHA_PUBLIC_KEY }}
+          DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+          MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
+          MYSQL_USER: ${{ secrets.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }} 
+        run: |
+          ~/setenv.sh RECAPTCHA_SECRET_KEY "${{ env.RECAPTCHA_SECRET_KEY }}"
+          ~/setenv.sh RECAPTCHA_PUBLIC_KEY "${{ env.RECAPTCHA_PUBLIC_KEY }}"
+          ~/setenv.sh DJANGO_SECRET_KEY "${{ env.DJANGO_SECRET_KEY }}"
+          ~/setenv.sh MYSQL_HOST "${{ env.MYSQL_HOST }}"
+          ~/setenv.sh MYSQL_USER "${{ env.MYSQL_USER }}"
+          ~/setenv.sh MYSQL_PASSWORD "${{ env.MYSQL_PASSWORD }}"
+          ~/setenv.sh MYSQL_DATABASE "${{ env.MYSQL_DATABASE }}"
+          source ~/.bashrc
+      # --- 7. Restart Gunicorn service ---
+      - name: Restart Gunicorn service
+        
+
+
