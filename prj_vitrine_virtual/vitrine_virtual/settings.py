@@ -18,8 +18,14 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Carrega variáveis de ambiente do arquivo .env - Fix porco até encontrar um jeito melhor
-load_dotenv(dotenv_path="~/vitrinev2.env")
+# Carrega variáveis de ambiente do arquivo .env - tenta primeiro um .env no projeto,
+# depois cai para o arquivo em home (~) para compatibilidade com deploys antigos.
+env_path = BASE_DIR / ".env"
+if not env_path.exists():
+    # expande ~ corretamente e tenta o arquivo antigo
+    env_path = Path(os.path.expanduser("~/vitrinev2.env"))
+if env_path.exists():
+    load_dotenv(dotenv_path=str(env_path))
 #print("teste de variavel")
 #print(os.environ.get("DJANGO_SECRET_KEY"))
 
