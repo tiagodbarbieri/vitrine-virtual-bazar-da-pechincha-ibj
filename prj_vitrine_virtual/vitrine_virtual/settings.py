@@ -18,17 +18,8 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Carrega variáveis de ambiente do arquivo .env - tenta primeiro o .env no projeto,
-# depois cai para o arquivo em home (~) para compatibilidade com deploys antigos.
-env_path = BASE_DIR / ".env"
-if not env_path.exists():
-    # expande ~ corretamente e tenta o arquivo antigo
-    env_path = Path(os.path.expanduser("~/vitrinev2.env"))
-if env_path.exists():
-    load_dotenv(dotenv_path=str(env_path))
-else:
-    # opcional: deixar um comentário/log aqui. Não chamamos print em produção.
-    pass
+# Carrega variáveis de ambiente do arquivo .env - Fix porco até encontrar um jeito melhor
+load_dotenv(dotenv_path="~/vitrinev2.env")
 #print("teste de variavel")
 #print(os.environ.get("DJANGO_SECRET_KEY"))
 
@@ -163,10 +154,10 @@ STATIC_URL = "/static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Diretórios de arquivos estáticos
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "staticfiles"),)
 
 # Diretórios de arquivos estáticos do projeto, quando em produção
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 # Especificando o caminho para arquivos estáticos fornecidos pelos usuários
 MEDIA_ROOT = os.path.join(BASE_DIR, "upload")
