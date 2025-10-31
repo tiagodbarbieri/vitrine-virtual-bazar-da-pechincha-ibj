@@ -73,6 +73,13 @@ jobs:
           ~/setenv.sh MYSQL_PASSWORD "${{ env.MYSQL_PASSWORD }}"
           ~/setenv.sh MYSQL_DATABASE "${{ env.MYSQL_DATABASE }}"
           source ~/.bashrc
+          ~/updateenv.sh ~/vitrinev2.env RECAPTCHA_PRIVATE_KEY "${{ env.RECAPTCHA_PRIVATE_KEY }}"
+          ~/updateenv.sh ~/vitrinev2.env RECAPTCHA_PUBLIC_KEY "${{ env.RECAPTCHA_PUBLIC_KEY }}"      
+          ~/updateenv.sh ~/vitrinev2.env DJANGO_SECRET_KEY "${{ env.DJANGO_SECRET_KEY }}"
+          ~/updateenv.sh ~/vitrinev2.env MYSQL_HOST "${{ env.MYSQL_HOST }}"
+          ~/updateenv.sh ~/vitrinev2.env MYSQL_USER "${{ env.MYSQL_USER }}"
+          ~/updateenv.sh ~/vitrinev2.env MYSQL_PASSWORD "${{ env.MYSQL_PASSWORD }}"
+          ~/updateenv.sh ~/vitrinev2.env MYSQL_DATABASE "${{ env.MYSQL_DATABASE }}"
 
       # --- 6. Update MySQL database from SQLite ---
       - name: Update MySQL database
