@@ -104,7 +104,8 @@ class Register(forms.Form):
         # Validando o password com as funções Django
         validate_password(str(password))
 
-        return {"password": password, "password_confirmation": password_confirmation}
+        # Retornar o cleaned_data completo (não sobrescrever com um dicionário parcial)
+        return cleaned_data
 
     # Verificar se o CPF está correto
     def clean_cpf(self):

@@ -12,6 +12,7 @@ from users.utils import only_digits, quantity_items_available, next_second_satur
 from validate_docbr import CPF
 from json import loads
 from datetime import date
+from django.db import transaction
 
 
 def cadastro(request):
@@ -20,33 +21,42 @@ def cadastro(request):
         if form.is_valid():
             cpf_maker = CPF()
 
-            username = request.POST.get("username")
-            email = request.POST.get("email")
-            password = request.POST.get("password")
-            first_name = request.POST.get("first_name")
-            last_name = request.POST.get("last_name")
-            cpf = request.POST.get("cpf")
-            birthday = request.POST.get("birthday")
-            phone_number = request.POST.get("phone_number")
-            gender = request.POST.get("gender")
-            privacy_police = True if (request.POST.get("privacy_police")) == "on" else False
+            # Use cleaned_data (validated & converted types) instead of raw POST
+            cd = form.cleaned_data
+            username = cd.get("username")
+            email = cd.get("email")
+            password = cd.get("password")
+            first_name = cd.get("first_name")
+            last_name = cd.get("last_name")
+            cpf = cd.get("cpf")
+            birthday = cd.get("birthday")
+            phone_number = cd.get("phone_number")
+            gender = cd.get("gender")
+            privacy_police = bool(cd.get("privacy_police"))
 
-            user = User.objects.create_user(
-                username=username,
-                email=email,
-                password=password,
-                first_name=first_name,
-                last_name=last_name,
-            )
+            # Create user and UserInfo atomically and verify pk
+            with transaction.atomic():
+                user = User.objects.create_user(
+                    username=username,
+                    email=email,
+                    password=password,
+                    first_name=first_name,
+                    last_name=last_name,
+                )
 
-            UserInfo.objects.create(
-                cpf=cpf_maker.mask(only_digits(cpf)),
-                birthday=birthday,
-                phone_number=phone_number,
-                gender=gender,
-                privacy_police=privacy_police,
-                user=user,
-            )
+                # defensive check: ensure user has a valid PK
+                if not getattr(user, "pk", None) or int(user.pk) == 0:
+                    raise ValueError("created user has invalid primary key")
+
+                UserInfo.objects.create(
+                    cpf=cpf_maker.mask(only_digits(cpf)),
+                    birthday=birthday,
+                    phone_number=phone_number,
+                    gender=gender,
+                    privacy_police=privacy_police,
+                    user=user,
+                )
+
             return render(request, "cadastro_finalizado.html", {"user_first_name": first_name})
     else:
         form = Register()
