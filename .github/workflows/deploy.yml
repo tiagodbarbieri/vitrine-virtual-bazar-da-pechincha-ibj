@@ -113,6 +113,19 @@ jobs:
                   df.to_sql(tname, mysql_engine, if_exists='replace', index=False)
           PYCODE
 
+      # --- 7. Run production environment maintenance steps ---
+      - name: Run production environment maintenance steps
+        env:
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+          DEPLOY_PATH_FULL: ${{ secrets.DEPLOY_PATH_FULL }}
+        run: |
+          cd $DEPLOY_PATH
+          python -m venv .venv
+          source .venv/bin/activate
+          cd $DEPLOY_PATH_FULL/prj_vitrine_virtual
+          python manage.py makemigrations
+          python manage.py migrate
+          python manage.py collectstatic --noinput --verbosity 2  
 
         
 
