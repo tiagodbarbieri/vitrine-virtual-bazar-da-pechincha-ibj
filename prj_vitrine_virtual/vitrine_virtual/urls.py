@@ -25,12 +25,14 @@ from django.views.static import serve
 
 urlpatterns = [
     path("", include("main.urls")),
+    path("admin/", admin.site.urls),
     path("users/", include("users.urls")),
     path("quem-somos/", TemplateView.as_view(template_name="quem_somos.html"), name="quem-somos"),
     path("contato/", TemplateView.as_view(template_name="contato.html"), name="contato"),
     path("admin/", admin.site.urls),
     re_path(r'^upload/(?P<path>.*)$', serve, {'document_root':settings.MEDIA_ROOT}),
-] #+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]  + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) 
+    #+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # Altera os nomes na página de login do admin
 admin.site.site_title = "ADMIN BAZAR MISSIONÁRIO IBJ"
