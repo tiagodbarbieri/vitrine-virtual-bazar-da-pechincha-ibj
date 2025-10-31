@@ -36,7 +36,7 @@ if env_path.exists():
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["vitrinevirtual.gtpc.com.br", "69.48.179.179", "localhost", "127.0.0.1"]
 
