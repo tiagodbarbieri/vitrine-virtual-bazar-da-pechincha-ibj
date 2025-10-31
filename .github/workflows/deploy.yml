@@ -38,6 +38,8 @@ jobs:
               echo 'Repository cloned successfully.'
             else
               cd $DEPLOY_PATH_FULL
+              git fetch --all
+              git stash
               git pull --rebase origin deploy_kpis
               echo 'Repository updated successfully.'
             fi

@@ -20,6 +20,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Carrega variáveis de ambiente do arquivo .env - Fix porco até encontrar um jeito melhor
 load_dotenv("~/vitrinev2.env")
+print("teste de variavel")
+print(os.environ.get("DJANGO_SECRET_KEY"))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
