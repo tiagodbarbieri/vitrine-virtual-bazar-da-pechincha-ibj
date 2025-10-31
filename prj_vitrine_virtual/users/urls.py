@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, re_path
 from users.views import cadastro
 from users.views import redefinir_senha
 from users.views import minha_conta
@@ -8,6 +8,7 @@ from users.views import apagar_reserva
 from users.views import login
 from users.views import logout
 from users.views import excluir_conta
+from django.views.static import serve
 
 
 urlpatterns = [
@@ -20,4 +21,5 @@ urlpatterns = [
     path("login/", login, name="login"),
     path("logout/", logout, name="logout"),
     path("excluir-conta/", excluir_conta, name="excluir-conta"),
+    re_path(r'^upload/(?P<path>.*)$', serve, {'document_root':settings.MEDIA_ROOT}),
 ]
