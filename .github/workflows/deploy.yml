@@ -176,8 +176,8 @@ jobs:
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_DATABASE: ${{ secrets.POSTGRES_DATABASE }}
         run: |
-          pgloader sqlite:///$SQLITE_PATH postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST/$POSTGRES_DATABASE --with "data only" --with "on duplicate key update"
-
+          pgloader ~/pgloader_vitrineve_drop
+          
       # --- 7. Run production environment maintenance steps ---
       - name: Run production environment maintenance steps
         env:
