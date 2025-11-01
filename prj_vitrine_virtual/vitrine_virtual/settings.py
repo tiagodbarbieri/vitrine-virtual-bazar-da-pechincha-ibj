@@ -105,15 +105,13 @@ WSGI_APPLICATION = "vitrine_virtual.wsgi.application"
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get("MYSQL_DATABASE"),       # The name of your MySQL database
-        'USER': os.environ.get("MYSQL_USER"),           # Your MySQL username
-        'PASSWORD': os.environ.get("MYSQL_PASSWORD"),   # Your MySQL password
-        'HOST': os.environ.get("MYSQL_HOST"),           # Or the IP address/hostname of your MySQL server
-        'PORT': '3306',                                 # Default MySQL port
-        'OPTIONS': {
-            'charset': 'utf8mb4',
-        }
+        # Use PostgreSQL in production via environment variables
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get("POSTGRES_DATABASE") or os.environ.get("POSTGRES_DB"),
+        'USER': os.environ.get("POSTGRES_USER"),
+        'PASSWORD': os.environ.get("POSTGRES_PASSWORD"),
+        'HOST': os.environ.get("POSTGRES_HOST"),
+        'PORT': os.environ.get("POSTGRES_PORT", '5432'),
     }
 }
 

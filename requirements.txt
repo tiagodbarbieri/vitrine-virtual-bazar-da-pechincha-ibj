@@ -7,9 +7,9 @@ pillow==11.1.0
 validate_docbr==1.11.1
 pandas==2.2.1
 SQLAlchemy==2.0.20
-PyMySQL[rsa]==1.1.0
 python-dotenv==1.0.1
-mysqlclient>2.2
+psycopg2-binary==2.9.7
+python-dotenv==1.0.1
 gunicorn==23.0.0
 cryptography==45.0.5
 
