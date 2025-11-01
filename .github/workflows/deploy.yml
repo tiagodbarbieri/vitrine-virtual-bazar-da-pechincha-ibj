@@ -18,7 +18,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.10'
 
       # --- 3. Deploy site via git pull ---
       - name: Deploy site via git pull
@@ -83,6 +83,21 @@ jobs:
           ~/updateenv.sh ~/vitrinev2.env POSTGRES_PASSWORD "${{ env.POSTGRES_PASSWORD }}"
           ~/updateenv.sh ~/vitrinev2.env POSTGRES_DATABASE "${{ env.POSTGRES_DATABASE }}"
 
+      
+      # --- 5.b Dry-run: inspect SQLite and Postgres (no writes) ---
+      - name: "Dry-run: inspect SQLite and Postgres (no writes)"
+        env:
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+          DEPLOY_PATH_FULL: ${{ secrets.DEPLOY_PATH_FULL }}
+          SQLITE_PATH: ${{ secrets.DEPLOY_PATH_FULL }}/prj_vitrine_virtual/db.sqlite3
+          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DATABASE: ${{ secrets.POSTGRES_DATABASE }}
+        run: |
+          sudo ~/stopvitrinev2.sh
+          
+      
       # --- 5.b Dry-run: inspect SQLite and Postgres (no writes) ---
       - name: "Dry-run: inspect SQLite and Postgres (no writes)"
         env:
@@ -161,74 +176,7 @@ jobs:
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_DATABASE: ${{ secrets.POSTGRES_DATABASE }}
         run: |
-          cd $DEPLOY_PATH
-          python -m venv .venv
-          source .venv/bin/activate
-          python <<'PYCODE'
-          import os
-          import pandas as pd
-          from sqlalchemy import create_engine, MetaData, Table, inspect
-          from sqlalchemy.dialects.postgresql import insert
-
-          sqlite_path = os.environ.get('SQLITE_PATH')
-          pg_user = os.environ.get('POSTGRES_USER')
-          pg_password = os.environ.get('POSTGRES_PASSWORD')
-          pg_host = os.environ.get('POSTGRES_HOST')
-          pg_db = os.environ.get('POSTGRES_DATABASE')
-
-          sqlite_engine = create_engine(f"sqlite:///{sqlite_path}")
-          pg_engine = create_engine(f"postgresql+psycopg2://{pg_user}:{pg_password}@{pg_host}/{pg_db}")
-
-          with sqlite_engine.connect() as conn_sqlite, pg_engine.connect() as conn_pg:
-            meta = MetaData()
-            inspector = inspect(conn_pg)
-            tables = [row[0] for row in conn_sqlite.exec_driver_sql("SELECT name FROM sqlite_master WHERE type='table'").fetchall()]
-            for tname in tables:
-              if tname == 'sqlite_sequence':
-                continue
-              print(f"Processing table: {tname}")
-              try:
-                df = pd.read_sql_table(tname, conn_sqlite)
-              except Exception as e:
-                print(f"Skipping {tname}: could not read from sqlite ({e})")
-                continue
-
-              if df.empty:
-                print(f"{tname}: sqlite table empty, skipping")
-                continue
-
-              # If table doesn't exist in Postgres, create it (initial population)
-              if tname not in inspector.get_table_names():
-                print(f"{tname}: does not exist in Postgres -> creating and populating")
-                df.to_sql(tname, conn_pg, if_exists='replace', index=False)
-                continue
-
-              pk = inspector.get_pk_constraint(tname).get('constrained_columns', [])
-              if not pk:
-                # Skip tables without a primary key to avoid accidental duplicates
-                print(f"{tname}: no primary key in Postgres - skipping upsert to avoid duplicates")
-                continue
-
-              # Reflect table and perform bulk upsert using PostgreSQL ON CONFLICT
-              table = Table(tname, meta, autoload_with=conn_pg)
-              records = df.to_dict(orient='records')
-              if not records:
-                continue
-
-              chunk_size = 500
-              for i in range(0, len(records), chunk_size):
-                chunk = records[i:i+chunk_size]
-                stmt = insert(table).values(chunk)
-                # Build update mapping for non-PK columns
-                update_cols = {c.name: getattr(stmt.excluded, c.name) for c in table.columns if c.name not in pk}
-                if not update_cols:
-                  # nothing to update, skip
-                  continue
-                stmt = stmt.on_conflict_do_update(index_elements=pk, set_=update_cols)
-                conn_pg.execute(stmt)
-
-              print(f"{tname}: upserted {len(records)} rows (no deletions)")
-          PYCODE
+          pgloader sqlite:///$SQLITE_PATH postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST/$POSTGRES_DATABASE --with "data only" --with "on duplicate key update"
 
       # --- 7. Run production environment maintenance steps ---
       - name: Run production environment maintenance steps
@@ -243,7 +191,7 @@ jobs:
           python manage.py makemigrations
           python manage.py migrate
           python manage.py collectstatic --noinput --verbosity 2
-          sudo ~/reloadvitrinev2.sh
+          sudo ~/startvitrinev2.sh
           
 
         
