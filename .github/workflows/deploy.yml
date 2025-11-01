@@ -83,6 +83,73 @@ jobs:
           ~/updateenv.sh ~/vitrinev2.env POSTGRES_PASSWORD "${{ env.POSTGRES_PASSWORD }}"
           ~/updateenv.sh ~/vitrinev2.env POSTGRES_DATABASE "${{ env.POSTGRES_DATABASE }}"
 
+      # --- 5.b Dry-run: inspect SQLite and Postgres (no writes) ---
+      - name: "Dry-run: inspect SQLite and Postgres (no writes)"
+        env:
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+          DEPLOY_PATH_FULL: ${{ secrets.DEPLOY_PATH_FULL }}
+          SQLITE_PATH: ${{ secrets.DEPLOY_PATH_FULL }}/prj_vitrine_virtual/db.sqlite3
+          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DATABASE: ${{ secrets.POSTGRES_DATABASE }}
+        run: |
+          set -e
+          cd $DEPLOY_PATH
+          # activate venv created in the install step
+          if [ -f .venv/bin/activate ]; then
+            source .venv/bin/activate
+          fi
+          python <<'PYCODE'
+          import os
+          import pandas as pd
+          from sqlalchemy import create_engine, inspect, text
+
+          sqlite_path = os.environ.get('SQLITE_PATH')
+          pg_user = os.environ.get('POSTGRES_USER')
+          pg_password = os.environ.get('POSTGRES_PASSWORD')
+          pg_host = os.environ.get('POSTGRES_HOST')
+          pg_db = os.environ.get('POSTGRES_DATABASE')
+
+          print('DRY-RUN DEBUG:')
+          print('  SQLITE_PATH=', sqlite_path)
+          print('  POSTGRES_HOST=', pg_host)
+          print('  POSTGRES_DATABASE=', pg_db)
+
+          if not sqlite_path or not os.path.exists(sqlite_path):
+              print('SQLite file not found at', sqlite_path)
+          else:
+              sqlite_engine = create_engine(f"sqlite:///{sqlite_path}")
+              with sqlite_engine.connect() as c:
+                  tables = [r[0] for r in c.exec_driver_sql("SELECT name FROM sqlite_master WHERE type='table'").fetchall()]
+                  print('SQLite tables:', tables)
+                  for t in tables:
+                      if t == 'sqlite_sequence':
+                          continue
+                      try:
+                          df = pd.read_sql_table(t, c)
+                          print(f"  {t}: {len(df)} rows (from SQLite)")
+                      except Exception as e:
+                          print(f"  Could not read {t} from SQLite: {e}")
+
+          # Check Postgres connection and counts
+          try:
+              pg_url = f"postgresql+psycopg2://{pg_user}:{pg_password}@{pg_host}/{pg_db}"
+              pg_engine = create_engine(pg_url)
+              with pg_engine.connect() as c:
+                  inspector = inspect(c)
+                  pgtables = inspector.get_table_names()
+                  print('Postgres tables:', pgtables)
+                  for t in pgtables:
+                      try:
+                          cnt = c.execute(text(f"SELECT COUNT(*) FROM {t}")).scalar()
+                          print(f"  {t}: {cnt} rows (in Postgres)")
+                      except Exception as e:
+                          print(f"  Could not count rows in Postgres table {t}: {e}")
+          except Exception as e:
+              print('Could not connect to Postgres:', e)
+          PYCODE
+
       # --- 6. Update PostgreSQL database from SQLite (upsert only) ---
       - name: Update PostgreSQL database
         env:
