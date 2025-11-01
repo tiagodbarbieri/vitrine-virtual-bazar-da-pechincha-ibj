@@ -86,12 +86,16 @@ jobs:
       # --- 6. Update MySQL database from SQLite ---
       - name: Update MySQL database
         env:
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
           SQLITE_PATH: ${{ secrets.DEPLOY_PATH_FULL }}/prj_vitrine_virtual/db.sqlite3
           MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
           MYSQL_USER: ${{ secrets.MYSQL_USER }}
           MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
           MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
         run: |
+          cd $DEPLOY_PATH
+          python -m venv .venv
+          source .venv/bin/activate
           python <<'PYCODE'
           import pandas as pd
           from sqlalchemy import create_engine
