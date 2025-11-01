@@ -86,12 +86,17 @@ jobs:
       # --- 6. Update PostgreSQL database from SQLite (upsert only) ---
       - name: Update PostgreSQL database
         env:
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+          DEPLOY_PATH_FULL: ${{ secrets.DEPLOY_PATH_FULL }}
           SQLITE_PATH: ${{ secrets.DEPLOY_PATH_FULL }}/prj_vitrine_virtual/db.sqlite3
           POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_DATABASE: ${{ secrets.POSTGRES_DATABASE }}
         run: |
+          cd $DEPLOY_PATH
+          python -m venv .venv
+          source .venv/bin/activate
           python <<'PYCODE'
           import os
           import pandas as pd
