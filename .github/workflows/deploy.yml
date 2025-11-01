@@ -34,13 +34,13 @@ jobs:
             # Check if the .git directory exists
             if [ ! -d "${{ env.DEPLOY_PATH_FULL }}"/.git ]; then
               cd $DEPLOY_PATH
-              git clone --branch deploy_kpis https://github.com/Projetos-Integradores-Univesp/vitrine-virtual-bazar-da-pechincha-ibj.git
+              git clone --branch deploy_kpis_pgsql https://github.com/Projetos-Integradores-Univesp/vitrine-virtual-bazar-da-pechincha-ibj.git
               echo 'Repository cloned successfully.'
             else
               cd $DEPLOY_PATH_FULL
               git fetch --all
               git stash
-              git pull --rebase origin deploy_kpis
+              git pull --rebase origin deploy_kpis_pgsql
               echo 'Repository updated successfully.'
             fi
       
