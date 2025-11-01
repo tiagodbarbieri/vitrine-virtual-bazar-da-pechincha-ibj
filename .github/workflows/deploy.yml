@@ -176,8 +176,8 @@ jobs:
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_DATABASE: ${{ secrets.POSTGRES_DATABASE }}
         run: |
-          pgloader ~/pgloader_vitrineve_drop
-          
+          pgloader ~/pgloader_vitrinev2_drop
+
       # --- 7. Run production environment maintenance steps ---
       - name: Run production environment maintenance steps
         env:
