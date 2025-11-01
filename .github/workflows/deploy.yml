@@ -3,7 +3,7 @@ name: Deploy and Update PostgreSQL Database
 on:
   push:
     branches:
-      - deploy_kpis
+      - deploy_kpis_pgsql
 
 jobs:
   deploy:
